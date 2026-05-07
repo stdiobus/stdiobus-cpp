@@ -1,0 +1,35 @@
+# Build artifacts
+build/
+build-*/
+cmake-build-*/
+compile_commands.json
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Conan
+CMakeUserPresets.json
+
+# Coverage
+*.gcno
+*.gcda
+*.gcov
+coverage/
+lcov.info
+
+# Sanitizer logs
+*.asan
+*.tsan
+*.ubsan
+
+# Internal
+sandbox/
+.kiro/

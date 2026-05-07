@@ -1,0 +1,150 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            compiler: gcc
+            cc: gcc-12
+            cxx: g++-12
+          - os: ubuntu-latest
+            compiler: clang
+            cc: clang-15
+            cxx: clang++-15
+          - os: macos-latest
+            compiler: appleclang
+            cc: clang
+            cxx: clang++
+
+    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.os }} / ${{ matrix.compiler }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies (Ubuntu)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build
+
+      - name: Configure
+        env:
+          CC: ${{ matrix.cc }}
+          CXX: ${{ matrix.cxx }}
+        run: |
+          cmake -S . -B build \
+            -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DSTDIOBUS_BUILD_TESTS=ON \
+            -DSTDIOBUS_BUILD_EXAMPLES=ON \
+            -DSTDIOBUS_WARNINGS_AS_ERRORS=ON
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Test
+        run: ctest --test-dir build --output-on-failure --timeout 60
+
+  sanitizers:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        sanitizer: [address,undefined, thread]
+
+    name: Sanitizer / ${{ matrix.sanitizer }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build clang-15
+
+      - name: Configure
+        env:
+          CC: clang-15
+          CXX: clang++-15
+        run: |
+          cmake -S . -B build \
+            -G Ninja \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DSTDIOBUS_BUILD_TESTS=ON \
+            -DSTDIOBUS_SANITIZER=${{ matrix.sanitizer }}
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Test
+        run: ctest --test-dir build --output-on-failure --timeout 120
+
+  format-check:
+    runs-on: ubuntu-latest
+    name: Format Check
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install clang-format
+        run: sudo apt-get install -y clang-format-15
+
+      - name: Check formatting
+        run: ./scripts/format.sh --check
+
+  install-test:
+    runs-on: ubuntu-latest
+    name: Install & find_package
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build
+
+      - name: Build and install
+        run: |
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \
+            -DSTDIOBUS_BUILD_TESTS=OFF -DSTDIOBUS_BUILD_EXAMPLES=OFF \
+            -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install
+          cmake --build build --parallel
+          cmake --install build
+
+      - name: Test find_package
+        run: |
+          cat > /tmp/test_find/CMakeLists.txt << 'EOF'
+          cmake_minimum_required(VERSION 3.14)
+          project(test_find CXX)
+          set(CMAKE_CXX_STANDARD 17)
+          find_package(stdiobus REQUIRED)
+          add_executable(test_app main.cpp)
+          target_link_libraries(test_app PRIVATE stdiobus::stdiobus)
+          EOF
+          
+          mkdir -p /tmp/test_find
+          cat > /tmp/test_find/main.cpp << 'EOF'
+          #include <stdiobus.hpp>
+          int main() {
+              return stdiobus::version_major() == 1 ? 0 : 1;
+          }
+          EOF
+          
+          cmake -S /tmp/test_find -B /tmp/test_find/build \
+            -DCMAKE_PREFIX_PATH=${{ github.workspace }}/install
+          cmake --build /tmp/test_find/build

@@ -1,0 +1,49 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    name: Create Release
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        id: version
+        run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Build source archive
+        run: |
+          git archive --format=tar.gz --prefix=stdiobus-${{ steps.version.outputs.version }}/ \
+            -o stdiobus-${{ steps.version.outputs.version }}.tar.gz HEAD
+
+      - name: Generate checksums
+        run: |
+          sha256sum stdiobus-${{ steps.version.outputs.version }}.tar.gz \
+            > stdiobus-${{ steps.version.outputs.version }}.sha256
+
+      - name: Extract changelog
+        id: changelog
+        run: |
+          # Extract section for this version from CHANGELOG.md
+          awk '/^## \['"${{ steps.version.outputs.version }}"'\]/{found=1; next} /^## \[/{if(found) exit} found{print}' \
+            CHANGELOG.md > release_notes.md
+          echo "notes_file=release_notes.md" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body_path: release_notes.md
+          files: |
+            stdiobus-${{ steps.version.outputs.version }}.tar.gz
+            stdiobus-${{ steps.version.outputs.version }}.sha256
+          draft: false
+          prerelease: false

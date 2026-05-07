@@ -1,0 +1,27 @@
+{
+    "name": "stdiobus C++ SDK",
+    "build": {
+        "dockerfile": "../Dockerfile",
+        "target": "dev"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.cpptools",
+                "ms-vscode.cmake-tools",
+                "llvm-vs-code-extensions.vscode-clangd",
+                "xaver.clang-format"
+            ],
+            "settings": {
+                "cmake.buildDirectory": "${workspaceFolder}/build",
+                "cmake.configureArgs": [
+                    "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+                ],
+                "editor.formatOnSave": true,
+                "C_Cpp.default.cppStandard": "c++17"
+            }
+        }
+    },
+    "postCreateCommand": "cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON && cmake --build build --parallel",
+    "remoteUser": "root"
+}
