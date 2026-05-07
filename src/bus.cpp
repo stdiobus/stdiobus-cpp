@@ -70,9 +70,11 @@ struct Bus::Impl {
     }
 };
 
-Bus::Bus(std::string_view config_path) 
-    : Bus(Options{.config_path = std::string(config_path)}) 
-{}
+Bus::Bus(std::string_view config_path) {
+    Options opts;
+    opts.config_path = std::string(config_path);
+    *this = Bus(std::move(opts));
+}
 
 Bus::Bus(Options options) : impl_(std::make_unique<Impl>()) {
     impl_->options = std::move(options);

@@ -27,7 +27,11 @@ for arg in "$@"; do
 done
 
 # Find clang-format
-CLANG_FORMAT=$(command -v clang-format 2>/dev/null || true)
+CLANG_FORMAT=$(command -v clang-format 2>/dev/null || \
+               command -v clang-format-18 2>/dev/null || \
+               command -v clang-format-17 2>/dev/null || \
+               command -v clang-format-16 2>/dev/null || \
+               command -v clang-format-15 2>/dev/null || true)
 if [ -z "$CLANG_FORMAT" ]; then
     echo "Error: clang-format not found. Install with:"
     echo "  brew install clang-format    # macOS"

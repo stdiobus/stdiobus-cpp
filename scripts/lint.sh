@@ -28,7 +28,11 @@ for arg in "$@"; do
 done
 
 # Check for clang-tidy
-CLANG_TIDY=$(command -v clang-tidy 2>/dev/null || true)
+CLANG_TIDY=$(command -v clang-tidy 2>/dev/null || \
+             command -v clang-tidy-18 2>/dev/null || \
+             command -v clang-tidy-17 2>/dev/null || \
+             command -v clang-tidy-16 2>/dev/null || \
+             command -v clang-tidy-15 2>/dev/null || true)
 if [ -z "$CLANG_TIDY" ]; then
     echo "Error: clang-tidy not found. Install with:"
     echo "  brew install llvm           # macOS"
