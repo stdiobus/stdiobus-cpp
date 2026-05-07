@@ -1,24 +1,33 @@
-# stdio Bus — C++ SDK for AI Agent Transport
+<h1 align="center" style="font-weight:500">
+  <strong>stdio Bus C++ SDK for AI Agent Transport</strong>
+</h1>
 
-[![Version](https://img.shields.io/badge/version-1.0.0-brightgreen?style=for-the-badge&logo=semver)](CHANGELOG.md)
-[![MCP](https://img.shields.io/badge/protocol-MCP-purple?style=for-the-badge&logo=jsonwebtokens)](https://modelcontextprotocol.io)
-[![ACP](https://img.shields.io/badge/protocol-ACP-purple?style=for-the-badge&logo=jsonwebtokens)](https://agentclientprotocol.com)
-[![stdioBus](https://img.shields.io/badge/ecosystem-stdio%20Bus-ff4500?style=for-the-badge)](https://github.com/stdiobus)
-[![C++17](https://img.shields.io/badge/C%2B%2B-17-00599C?style=for-the-badge&logo=cplusplus)](https://en.cppreference.com/w/cpp/17)
-[![CMake](https://img.shields.io/badge/CMake-3.14%2B-064F8C?style=for-the-badge&logo=cmake)](https://cmake.org)
-[![Conan](https://img.shields.io/badge/conan-2.x-6699CB?style=for-the-badge&logo=conan)](https://conan.io)
-[![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS-lightgrey?style=for-the-badge&logo=linux)](https://github.com/stdiobus/stdiobus-cpp)
-[![Architecture](https://img.shields.io/badge/arch-x86__64%20%7C%20arm64-blue?style=for-the-badge)](https://github.com/stdiobus/stdiobus-cpp)
-[![License](https://img.shields.io/badge/license-Apache--2.0-blue?style=for-the-badge&logo=opensourceinitiative)](LICENSE)
-[![CI](https://img.shields.io/github/actions/workflow/status/stdiobus/stdiobus-cpp/ci.yml?style=for-the-badge&logo=githubactions&label=CI)](https://github.com/stdiobus/stdiobus-cpp/actions/workflows/ci.yml)
-[![Tests](https://img.shields.io/badge/tests-61%20passing-brightgreen?style=for-the-badge&logo=googletest)](https://github.com/stdiobus/stdiobus-cpp)
-[![E2E](https://img.shields.io/badge/e2e-13%20passing-brightgreen?style=for-the-badge&logo=googletest)](https://github.com/stdiobus/stdiobus-cpp)
-[![Conformance](https://img.shields.io/badge/conformance-11%20passing-brightgreen?style=for-the-badge&logo=googletest)](https://github.com/stdiobus/stdiobus-cpp)
-[![Sanitizers](https://img.shields.io/badge/sanitizers-ASAN%20%7C%20UBSAN%20%7C%20TSAN-orange?style=for-the-badge&logo=llvm)](https://github.com/stdiobus/stdiobus-cpp)
-[![ABI](https://img.shields.io/badge/ABI-stable%20v1-success?style=for-the-badge)](docs/architecture.md)
-[![RAII](https://img.shields.io/badge/style-RAII-blue?style=for-the-badge&logo=cplusplus)](https://en.cppreference.com/w/cpp/language/raii)
+<p align="center">
+  A C++17 SDK for <a href="https://stdiobus.com" target="_blank">stdio Bus</a> — a process-embedded message bus for AI agent orchestration. Manages child worker processes communicating over stdin/stdout using JSON-RPC (MCP/ACP protocols).
+</p>
 
-A C++17 SDK for [stdio_bus](https://stdiobus.com) — a process-embedded message bus for AI agent orchestration. Manages child worker processes communicating over stdin/stdout using JSON-RPC (MCP/ACP protocols).
+<p align="center">
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-1.0.0-brightgreen?style=for-the-badge&logo=semver" alt="Version"></a>
+  <a href="https://modelcontextprotocol.io"><img src="https://img.shields.io/badge/protocol-MCP-purple?style=for-the-badge&logo=jsonwebtokens" alt="MCP"></a>
+  <a href="https://agentclientprotocol.com"><img src="https://img.shields.io/badge/protocol-ACP-purple?style=for-the-badge&logo=jsonwebtokens" alt="ACP"></a>
+  <a href="https://github.com/stdiobus"><img src="https://img.shields.io/badge/ecosystem-stdio%20Bus-ff4500?style=for-the-badge" alt="stdioBus"></a>
+  <a href="https://en.cppreference.com/w/cpp/17"><img src="https://img.shields.io/badge/C%2B%2B-17-00599C?style=for-the-badge&logo=cplusplus" alt="C++17"></a>
+  <a href="https://cmake.org"><img src="https://img.shields.io/badge/CMake-3.14%2B-064F8C?style=for-the-badge&logo=cmake" alt="CMake"></a>
+  <a href="https://conan.io"><img src="https://img.shields.io/badge/conan-2.x-6699CB?style=for-the-badge&logo=conan" alt="Conan"></a>
+  <a href="https://github.com/stdiobus/stdiobus-cpp"><img src="https://img.shields.io/badge/platform-Linux%20%7C%20macOS-lightgrey?style=for-the-badge&logo=linux" alt="Platform"></a>
+  <a href="https://github.com/stdiobus/stdiobus-cpp"><img src="https://img.shields.io/badge/arch-x86__64%20%7C%20arm64-blue?style=for-the-badge" alt="Architecture"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue?style=for-the-badge&logo=opensourceinitiative" alt="License"></a>
+  <a href="https://github.com/stdiobus/stdiobus-cpp/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/stdiobus/stdiobus-cpp/ci.yml?style=for-the-badge&logo=githubactions&label=CI" alt="CI"></a>
+  <a href="https://github.com/stdiobus/stdiobus-cpp"><img src="https://img.shields.io/badge/tests-61%20passing-brightgreen?style=for-the-badge&logo=googletest" alt="Tests"></a>
+  <a href="https://github.com/stdiobus/stdiobus-cpp"><img src="https://img.shields.io/badge/e2e-13%20passing-brightgreen?style=for-the-badge&logo=googletest" alt="E2E"></a>
+  <a href="https://github.com/stdiobus/stdiobus-cpp"><img src="https://img.shields.io/badge/conformance-11%20passing-brightgreen?style=for-the-badge&logo=googletest" alt="Conformance"></a>
+  <a href="https://github.com/stdiobus/stdiobus-cpp"><img src="https://img.shields.io/badge/sanitizers-ASAN%20%7C%20UBSAN%20%7C%20TSAN-orange?style=for-the-badge&logo=llvm" alt="Sanitizers"></a>
+  <a href="docs/architecture.md"><img src="https://img.shields.io/badge/ABI-stable%20v1-success?style=for-the-badge" alt="ABI"></a>
+  <a href="https://en.cppreference.com/w/cpp/language/raii"><img src="https://img.shields.io/badge/style-RAII-blue?style=for-the-badge&logo=cplusplus" alt="RAII"></a>
+</p>
+
+
+
 
 ## What It Does
 
