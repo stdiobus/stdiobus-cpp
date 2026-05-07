@@ -109,7 +109,6 @@ target_link_libraries(stdiobus PRIVATE ${STDIO_BUS_LIB_PATH})
 
 # Apply warnings to our own code only (PRIVATE)
 stdiobus_set_warnings(stdiobus)
-stdiobus_enable_sanitizers(stdiobus)
 
 # Platform-specific link dependencies
 if(UNIX AND NOT APPLE)
