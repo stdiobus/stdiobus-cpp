@@ -32,10 +32,11 @@ CLANG_TIDY=$(command -v clang-tidy 2>/dev/null || \
              command -v clang-tidy-18 2>/dev/null || \
              command -v clang-tidy-17 2>/dev/null || \
              command -v clang-tidy-16 2>/dev/null || \
-             command -v clang-tidy-15 2>/dev/null || true)
+             command -v clang-tidy-15 2>/dev/null || \
+             xcrun --find clang-tidy 2>/dev/null || true)
 if [ -z "$CLANG_TIDY" ]; then
     echo "Error: clang-tidy not found. Install with:"
-    echo "  brew install llvm           # macOS"
+    echo "  xcode-select --install      # macOS (Command Line Tools)"
     echo "  apt install clang-tidy      # Ubuntu"
     exit 1
 fi

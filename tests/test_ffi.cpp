@@ -3,14 +3,15 @@
  * Copyright 2026-present Raman Marozau, raman@stdiobus.com
  * SPDX-License-Identifier: Apache-2.0
  */
- 
+
 /**
  * @file test_ffi.cpp
  * @brief Tests for FFI thin wrapper
  */
 
-#include <gtest/gtest.h>
 #include <stdiobus/ffi.hpp>
+
+#include <gtest/gtest.h>
 
 using namespace stdiobus;
 using namespace stdiobus::ffi;
@@ -46,9 +47,9 @@ TEST(FFI, ToStats) {
     c_stats.routing_errors = 1;
     c_stats.client_connects = 10;
     c_stats.client_disconnects = 5;
-    
+
     Stats stats = to_stats(c_stats);
-    
+
     EXPECT_EQ(stats.messages_in, 100u);
     EXPECT_EQ(stats.messages_out, 50u);
     EXPECT_EQ(stats.bytes_in, 10000u);

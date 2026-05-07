@@ -3,11 +3,11 @@
  * Copyright 2026-present Raman Marozau, raman@stdiobus.com
  * SPDX-License-Identifier: Apache-2.0
  */
- 
+
 /**
  * @file version.hpp
  * @brief Version information for stdiobus C++ SDK
- * 
+ *
  * This header provides compile-time version constants and a runtime
  * version check against the linked C kernel library.
  */
@@ -54,17 +54,23 @@ constexpr std::string_view version() noexcept {
 /**
  * @brief Get SDK major version
  */
-constexpr int version_major() noexcept { return STDIOBUS_VERSION_MAJOR; }
+constexpr int version_major() noexcept {
+    return STDIOBUS_VERSION_MAJOR;
+}
 
 /**
  * @brief Get SDK minor version
  */
-constexpr int version_minor() noexcept { return STDIOBUS_VERSION_MINOR; }
+constexpr int version_minor() noexcept {
+    return STDIOBUS_VERSION_MINOR;
+}
 
 /**
  * @brief Get SDK patch version
  */
-constexpr int version_patch() noexcept { return STDIOBUS_VERSION_PATCH; }
+constexpr int version_patch() noexcept {
+    return STDIOBUS_VERSION_PATCH;
+}
 
 /**
  * @brief Check if the linked kernel API version is compatible
@@ -72,7 +78,7 @@ constexpr int version_patch() noexcept { return STDIOBUS_VERSION_PATCH; }
  */
 bool kernel_compatible() noexcept;
 
-} // namespace v1
-} // namespace stdiobus
+}  // namespace v1
+}  // namespace stdiobus
 
-#endif // STDIOBUS_VERSION_HPP
+#endif  // STDIOBUS_VERSION_HPP

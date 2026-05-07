@@ -3,14 +3,15 @@
  * Copyright 2026-present Raman Marozau, raman@stdiobus.com
  * SPDX-License-Identifier: Apache-2.0
  */
- 
+
 /**
  * @file test_error.cpp
  * @brief Tests for error handling
  */
 
-#include <gtest/gtest.h>
 #include <stdiobus/error.hpp>
+
+#include <gtest/gtest.h>
 
 using namespace stdiobus;
 
@@ -42,7 +43,7 @@ TEST(ErrorCode, Retryable) {
     EXPECT_TRUE(is_retryable(ErrorCode::Again));
     EXPECT_TRUE(is_retryable(ErrorCode::Full));
     EXPECT_TRUE(is_retryable(ErrorCode::Timeout));
-    
+
     EXPECT_FALSE(is_retryable(ErrorCode::Ok));
     EXPECT_FALSE(is_retryable(ErrorCode::Error));
     EXPECT_FALSE(is_retryable(ErrorCode::Invalid));
@@ -79,7 +80,7 @@ TEST(Error, FromC) {
     auto err = Error::from_c(-10);
     EXPECT_TRUE(err);
     EXPECT_EQ(err.code(), ErrorCode::Config);
-    
+
     auto ok = Error::from_c(0);
     EXPECT_FALSE(ok);
 }
@@ -93,11 +94,11 @@ TEST(Error, IsRetryable) {
 TEST(Error, BoolConversion) {
     Error ok;
     Error err(ErrorCode::Error);
-    
+
     if (ok) {
         FAIL() << "Ok should be false";
     }
-    
+
     if (!err) {
         FAIL() << "Error should be true";
     }

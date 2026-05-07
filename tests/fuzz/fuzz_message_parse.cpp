@@ -17,15 +17,17 @@
 
 #include <stdiobus/error.hpp>
 #include <stdiobus/types.hpp>
-#include <cstdint>
+
 #include <cstddef>
+#include <cstdint>
 #include <string_view>
 
 // Fuzz the AsyncBus ID extraction logic
 // (This is the most complex parsing in the SDK)
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     // Limit input size to prevent OOM
-    if (size > 64 * 1024) return 0;
+    if (size > 64 * 1024)
+        return 0;
 
     std::string_view input(reinterpret_cast<const char*>(data), size);
 

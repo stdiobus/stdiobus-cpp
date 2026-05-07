@@ -3,11 +3,11 @@
  * Copyright 2026-present Raman Marozau, raman@stdiobus.com
  * SPDX-License-Identifier: Apache-2.0
  */
- 
+
 /**
  * @file error.hpp
  * @brief Error handling for stdiobus C++ SDK
- * 
+ *
  * By default, uses status-style error handling (no exceptions).
  * Define STDIOBUS_CPP_EXCEPTIONS=1 to enable exception mode.
  */
@@ -47,21 +47,36 @@ enum class ErrorCode : int {
  */
 constexpr std::string_view error_code_name(ErrorCode code) noexcept {
     switch (code) {
-        case ErrorCode::Ok: return "Ok";
-        case ErrorCode::Error: return "Error";
-        case ErrorCode::Again: return "Again";
-        case ErrorCode::Eof: return "Eof";
-        case ErrorCode::Full: return "Full";
-        case ErrorCode::NotFound: return "NotFound";
-        case ErrorCode::Invalid: return "Invalid";
-        case ErrorCode::Config: return "Config";
-        case ErrorCode::Worker: return "Worker";
-        case ErrorCode::Routing: return "Routing";
-        case ErrorCode::Buffer: return "Buffer";
-        case ErrorCode::State: return "State";
-        case ErrorCode::Timeout: return "Timeout";
-        case ErrorCode::PolicyDenied: return "PolicyDenied";
-        default: return "Unknown";
+        case ErrorCode::Ok:
+            return "Ok";
+        case ErrorCode::Error:
+            return "Error";
+        case ErrorCode::Again:
+            return "Again";
+        case ErrorCode::Eof:
+            return "Eof";
+        case ErrorCode::Full:
+            return "Full";
+        case ErrorCode::NotFound:
+            return "NotFound";
+        case ErrorCode::Invalid:
+            return "Invalid";
+        case ErrorCode::Config:
+            return "Config";
+        case ErrorCode::Worker:
+            return "Worker";
+        case ErrorCode::Routing:
+            return "Routing";
+        case ErrorCode::Buffer:
+            return "Buffer";
+        case ErrorCode::State:
+            return "State";
+        case ErrorCode::Timeout:
+            return "Timeout";
+        case ErrorCode::PolicyDenied:
+            return "PolicyDenied";
+        default:
+            return "Unknown";
     }
 }
 
@@ -81,42 +96,37 @@ constexpr bool is_retryable(ErrorCode code) noexcept {
 
 /**
  * @brief Error class for status-style error handling
- * 
+ *
  * Lightweight, copyable, no heap allocation for common cases.
  */
 class Error {
 public:
     Error() noexcept : code_(ErrorCode::Ok) {}
     Error(ErrorCode code) noexcept : code_(code) {}
-    Error(ErrorCode code, std::string message) noexcept 
+    Error(ErrorCode code, std::string message) noexcept
         : code_(code), message_(std::move(message)) {}
-    
+
     /// Check if error occurred (true = error, false = ok)
-    constexpr explicit operator bool() const noexcept { 
-        return code_ != ErrorCode::Ok; 
-    }
-    
+    constexpr explicit operator bool() const noexcept { return code_ != ErrorCode::Ok; }
+
     /// Get error code
     constexpr ErrorCode code() const noexcept { return code_; }
-    
+
     /// Get error message
     std::string_view message() const noexcept {
-        if (!message_.empty()) return message_;
+        if (!message_.empty())
+            return message_;
         return error_code_name(code_);
     }
-    
+
     /// Check if error is retryable
-    constexpr bool is_retryable() const noexcept {
-        return stdiobus::is_retryable(code_);
-    }
-    
+    constexpr bool is_retryable() const noexcept { return stdiobus::is_retryable(code_); }
+
     /// Create OK result
     static Error ok() noexcept { return Error{}; }
-    
+
     /// Create error from C API return code
-    static Error from_c(int code) noexcept {
-        return Error{static_cast<ErrorCode>(code)};
-    }
+    static Error from_c(int code) noexcept { return Error{static_cast<ErrorCode>(code)}; }
 
 private:
     ErrorCode code_;
@@ -133,11 +143,9 @@ public:
     explicit Exception(Error error) : error_(std::move(error)) {
         what_msg_ = std::string(error_.message());
     }
-    
-    const char* what() const noexcept override {
-        return what_msg_.c_str();
-    }
-    
+
+    const char* what() const noexcept override { return what_msg_.c_str(); }
+
     const Error& error() const noexcept { return error_; }
     ErrorCode code() const noexcept { return error_.code(); }
 
@@ -148,12 +156,13 @@ private:
 
 /// Throw exception if error
 inline void throw_if_error(const Error& err) {
-    if (err) throw Exception(err);
+    if (err)
+        throw Exception(err);
 }
 
-#endif // STDIOBUS_CPP_EXCEPTIONS
+#endif  // STDIOBUS_CPP_EXCEPTIONS
 
-} // namespace v1
-} // namespace stdiobus
+}  // namespace v1
+}  // namespace stdiobus
 
-#endif // STDIOBUS_ERROR_HPP
+#endif  // STDIOBUS_ERROR_HPP

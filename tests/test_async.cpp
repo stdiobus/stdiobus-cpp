@@ -3,14 +3,15 @@
  * Copyright 2026-present Raman Marozau, raman@stdiobus.com
  * SPDX-License-Identifier: Apache-2.0
  */
- 
+
 /**
  * @file test_async.cpp
  * @brief Tests for async adaptor
  */
 
-#include <gtest/gtest.h>
 #include <stdiobus/async.hpp>
+
+#include <gtest/gtest.h>
 
 using namespace stdiobus;
 
@@ -43,7 +44,7 @@ TEST(AsyncBus, Construction) {
 TEST(AsyncBus, ConstructFromOptions) {
     Options opts;
     opts.config_path = "nonexistent.json";
-    
+
     AsyncBus bus(std::move(opts));
     // Same - C API creates handle regardless
 }
@@ -75,13 +76,13 @@ TEST(AsyncBus, NotifyInvalid) {
 
 TEST(AsyncBus, RequestAsyncInvalid) {
     AsyncBus bus("nonexistent.json");
-    
+
     auto future = bus.request_async(R"({"jsonrpc":"2.0","method":"test","id":1})");
-    
+
     // Future should be ready immediately with error
     auto status = future.wait_for(std::chrono::milliseconds(100));
     EXPECT_EQ(status, std::future_status::ready);
-    
+
     auto result = future.get();
     EXPECT_TRUE(result.error);
 }
@@ -94,10 +95,10 @@ TEST(AsyncBus, CheckTimeouts) {
 
 TEST(AsyncBus, BusAccess) {
     AsyncBus async_bus("nonexistent.json");
-    
+
     Bus& bus = async_bus.bus();
     const Bus& const_bus = async_bus.bus();
-    
+
     // C API creates handle even with invalid config - just verify access works
     (void)bus;
     (void)const_bus;
@@ -108,24 +109,24 @@ TEST(AsyncBus, BusAccess) {
 /*
 TEST(AsyncBus, Integration) {
     AsyncBus bus("examples/config.json");
-    
+
     ASSERT_FALSE(bus.start());
-    
+
     auto future = bus.request_async(
         R"({"jsonrpc":"2.0","method":"echo","params":{"msg":"hello"},"id":1})",
         std::chrono::seconds(5)
     );
-    
+
     // Pump until ready
     while (future.wait_for(std::chrono::milliseconds(0)) != std::future_status::ready) {
         bus.pump(std::chrono::milliseconds(10));
         bus.check_timeouts();
     }
-    
+
     auto result = future.get();
     EXPECT_TRUE(result);
     EXPECT_FALSE(result.response.empty());
-    
+
     bus.stop();
 }
 */
