@@ -17,7 +17,7 @@ class StdioBusCppConan(ConanFile):
     author = "Raman Marozau <raman@stdiobus.com>, stdiobus contributors"
     url = "https://github.com/stdiobus/stdiobus-cpp"
     homepage = "https://stdiobus.com"
-    description = "C++ SDK for stdio_bus - AI agent transport layer for MCP/ACP protocols"
+    description = "C++ SDK for stdio Bus - AI agent transport layer for MCP/ACP protocols"
     topics = ("stdiobus", "mcp", "acp", "agent", "transport", "json-rpc", "ipc")
     settings = "os", "compiler", "build_type", "arch"
     options = {

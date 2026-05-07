@@ -1,7 +1,7 @@
 {
   "name": "stdiobus",
   "version": "1.0.0",
-  "description": "C++ SDK for stdio_bus - AI agent transport layer for MCP/ACP protocols",
+  "description": "C++ SDK for stdio Bus - AI agent transport layer for MCP/ACP protocols",
   "homepage": "https://stdiobus.com",
   "license": "Apache-2.0",
   "supports": "linux | osx",

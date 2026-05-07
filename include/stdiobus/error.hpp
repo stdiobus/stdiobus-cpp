@@ -6,7 +6,7 @@
 
 /**
  * @file error.hpp
- * @brief Error handling for stdiobus C++ SDK
+ * @brief Error handling for stdio Bus C++ SDK
  *
  * By default, uses status-style error handling (no exceptions).
  * Define STDIOBUS_CPP_EXCEPTIONS=1 to enable exception mode.

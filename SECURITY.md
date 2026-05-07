@@ -13,7 +13,7 @@
 
 Please report security issues via email:
 
-- **Email:** security@stdiobus.com
+- **Email:** raman@stdiobus.com
 - **Subject:** `[SECURITY] stdiobus-cpp: <brief description>`
 
 ### What to Include

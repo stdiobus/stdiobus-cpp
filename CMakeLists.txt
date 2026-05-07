@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
 project(stdiobus-cpp 
     VERSION 1.0.0 
-    DESCRIPTION "C++ SDK for stdio_bus - AI agent transport layer"
+    DESCRIPTION "C++ SDK for stdio Bus - AI agent transport layer"
     HOMEPAGE_URL "https://stdiobus.com"
     LANGUAGES C CXX
 )

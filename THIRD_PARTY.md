@@ -5,7 +5,7 @@
 ### libstdio_bus (C kernel)
 
 - **License:** Apache-2.0
-- **Source:** https://github.com/stdiobus/stdio-bus
+- **Source:** https://github.com/stdiobus/stdiobus
 - **Usage:** Prebuilt static library (`libstdio_bus.a`) linked into the SDK
 - **Note:** Bundled in `prebuilds/` per platform triple
 
@@ -20,4 +20,4 @@
 
 ## No Other Runtime Dependencies
 
-The stdiobus C++ SDK has zero external runtime dependencies beyond the bundled C kernel library and the C++ standard library. This is by design to minimize supply chain risk and simplify deployment.
+The stdio Bus C++ SDK has zero external runtime dependencies beyond the bundled C kernel library and the C++ standard library. This is by design to minimize supply chain risk and simplify deployment.

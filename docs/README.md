@@ -1,4 +1,4 @@
-# stdiobus C++ SDK Documentation
+# stdio Bus C++ SDK Documentation
 
 Comprehensive documentation for the C++ SDK — your gateway to building AI agent transport systems.
 
@@ -36,7 +36,7 @@ Comprehensive documentation for the C++ SDK — your gateway to building AI agen
 - [Error Handling](errors.md) — Error taxonomy, patterns
 
 ### Overview
-- [What is stdio_bus](00-overview/01-what-is-stdio-bus.md)
+- [What is stdio_bus](00-overview/01-what-is-stdiobus.md)
 - [Invariants and Guarantees](00-overview/02-invariants-and-guarantees.md)
 
 ### Getting Started

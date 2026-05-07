@@ -1,4 +1,4 @@
-# This is a STANDALONE project that simulates a real user of the stdiobus C++ SDK.
+# This is a STANDALONE project that simulates a real user of the stdio Bus C++ SDK.
 # It uses find_package(stdiobus) — exactly as documented in README.
 # It does NOT live inside the SDK build tree.
 

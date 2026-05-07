@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-# Build script for stdiobus C++ SDK
+# Build script for stdio Bus C++ SDK
 # Usage: ./scripts/build.sh [--release] [--no-tests] [--no-examples]
 set -e
 
@@ -30,7 +30,7 @@ for arg in "$@"; do
     esac
 done
 
-echo "=== Building stdiobus C++ SDK ==="
+echo "=== Building stdio Bus C++ SDK ==="
 echo "  Build type: $BUILD_TYPE"
 echo "  Tests: $BUILD_TESTS"
 echo "  Examples: $BUILD_EXAMPLES"

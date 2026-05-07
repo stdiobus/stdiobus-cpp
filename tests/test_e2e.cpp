@@ -6,7 +6,7 @@
 
 /**
  * @file test_e2e.cpp
- * @brief End-to-end tests for stdiobus C++ SDK
+ * @brief End-to-end tests for stdio Bus C++ SDK
  *
  * These tests create a real bus with an echo worker (/bin/cat),
  * send messages, and verify responses come back correctly.

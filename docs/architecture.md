@@ -2,7 +2,7 @@
 
 ## Overview
 
-The stdiobus C++ SDK is a layered wrapper over a prebuilt C kernel library (`libstdio_bus.a`). It provides two API surfaces with different trade-offs:
+The stdio Bus C++ SDK is a layered wrapper over a prebuilt C kernel library (`libstdio_bus.a`). It provides two API surfaces with different trade-offs:
 
 ```mermaid
 sequenceDiagram

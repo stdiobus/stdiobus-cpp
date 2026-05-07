@@ -6,7 +6,7 @@
 
 /**
  * @file runner.cpp
- * @brief Persistent stdio_bus runner - keeps the bus running until Ctrl+C
+ * @brief Persistent stdio Bus runner - keeps the bus running until Ctrl+C
  *
  * Usage:
  *   ./runner --config <path.json>                    # stdio mode (embedded)

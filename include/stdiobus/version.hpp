@@ -6,7 +6,7 @@
 
 /**
  * @file version.hpp
- * @brief Version information for stdiobus C++ SDK
+ * @brief Version information for stdio Bus C++ SDK
  *
  * This header provides compile-time version constants and a runtime
  * version check against the linked C kernel library.

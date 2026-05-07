@@ -32,7 +32,7 @@ SDK_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 REPO_ROOT="$(cd "$SDK_DIR/../.." && pwd)"
 
 echo "============================================"
-echo "  stdiobus C++ SDK — User E2E Test"
+echo "  stdio Bus C++ SDK — User E2E Test"
 echo "============================================"
 echo ""
 echo "  Simulates: install → find_package → build → run"

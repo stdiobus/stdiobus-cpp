@@ -1,6 +1,6 @@
 # Quickstart: TCP Mode
 
-TCP mode exposes stdio_bus as a network server, allowing remote clients to connect.
+TCP mode exposes stdio Bus as a network server, allowing remote clients to connect.
 
 ## When to Use
 

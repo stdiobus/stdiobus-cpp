@@ -69,7 +69,7 @@ private:
 };
 
 /**
- * @brief Create a new stdio_bus instance (thin wrapper)
+ * @brief Create a new stdio Bus instance (thin wrapper)
  *
  * @param options C API options struct
  * @return Handle (may be null on error)
@@ -79,7 +79,7 @@ inline Handle create(const stdio_bus_options_t* options) noexcept {
 }
 
 /**
- * @brief Destroy a stdio_bus instance
+ * @brief Destroy a stdio Bus instance
  */
 inline void destroy(Handle& h) noexcept {
     if (h) {

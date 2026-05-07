@@ -1,6 +1,6 @@
 # Quickstart: Embedded Mode
 
-Embedded mode runs stdio_bus within your application process, communicating with workers via stdin/stdout pipes.
+Embedded mode runs stdio Bus within your application process, communicating with workers via stdin/stdout pipes.
 
 ## When to Use
 

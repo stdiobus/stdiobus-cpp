@@ -6,9 +6,9 @@
 
 /**
  * @file stdiobus.hpp
- * @brief C++ SDK for stdio_bus — AI agent transport layer
+ * @brief C++ SDK for stdio Bus — AI agent transport layer
  *
- * This is the main include file for the stdiobus C++ SDK.
+ * This is the main include file for the stdio Bus C++ SDK.
  * It provides:
  * - Version information and kernel compatibility check
  * - Error handling (status-style by default, exceptions optional)

@@ -4,7 +4,7 @@ Quick reference for all C++ SDK classes and methods.
 
 ## Bus Class
 
-RAII wrapper for stdio_bus lifecycle and messaging.
+RAII wrapper for stdio Bus lifecycle and messaging.
 
 ### Construction
 

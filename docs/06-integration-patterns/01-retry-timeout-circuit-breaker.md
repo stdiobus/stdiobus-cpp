@@ -1,6 +1,6 @@
 # Retry, Timeout, Circuit Breaker
 
-Standard resilience patterns for robust stdio_bus integration.
+Standard resilience patterns for robust stdio Bus integration.
 
 ## Timeout Policy
 

@@ -8,7 +8,7 @@
  * @file export.hpp
  * @brief Symbol visibility macros for shared library builds
  *
- * Currently stdiobus is distributed as a static library, so these macros
+ * Currently stdio Bus is distributed as a static library, so these macros
  * resolve to nothing. They are provided for future shared library support
  * and to document the public API boundary.
  */

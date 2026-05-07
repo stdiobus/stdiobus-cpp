@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 #
-# Development container for stdiobus C++ SDK
+# Development container for stdio Bus C++ SDK
 # Includes all build tools, sanitizers, and static analysis
 #
 # Usage:

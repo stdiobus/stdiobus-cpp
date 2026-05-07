@@ -2,7 +2,7 @@
  * @file stdio_bus_embed.h
  * @brief Embedding API for stdio Bus kernel
  *
- * This header provides the embedding API for integrating stdio_bus into
+ * This header provides the embedding API for integrating stdio Bus into
  * host applications and language runtimes (Node.js N-API, Python C extension, etc.)
  *
  * Key design principles:
@@ -69,7 +69,7 @@ typedef struct stdio_bus stdio_bus_t;
  * - A response comes back from a worker (for requests sent via stdio_bus_ingest)
  * - A notification arrives from a worker
  *
- * @param bus      The stdio_bus instance
+ * @param bus      The stdio Bus instance
  * @param msg      Message data (JSON, null-terminated)
  * @param len      Message length (excluding null terminator)
  * @param user_data User context from options
@@ -80,7 +80,7 @@ typedef void (*stdio_bus_message_cb)(stdio_bus_t *bus, const char *msg,
 /**
  * @brief Error callback - called on errors
  *
- * @param bus       The stdio_bus instance
+ * @param bus       The stdio Bus instance
  * @param code      Error code (STDIO_BUS_ERR_*)
  * @param message   Human-readable error message
  * @param user_data User context from options
@@ -93,7 +93,7 @@ typedef void (*stdio_bus_error_cb)(stdio_bus_t *bus, int code,
  *
  * If not provided, logs go to stderr.
  *
- * @param bus       The stdio_bus instance
+ * @param bus       The stdio Bus instance
  * @param level     Log level (0=DEBUG, 1=INFO, 2=WARN, 3=ERROR)
  * @param message   Log message
  * @param user_data User context from options
@@ -104,7 +104,7 @@ typedef void (*stdio_bus_log_cb)(stdio_bus_t *bus, int level,
 /**
  * @brief Worker event callback - called on worker lifecycle events
  *
- * @param bus       The stdio_bus instance
+ * @param bus       The stdio Bus instance
  * @param worker_id Worker identifier
  * @param event     Event type: "started", "stopped", "restarting", "failed"
  * @param user_data User context from options
@@ -148,7 +148,7 @@ typedef struct stdio_bus_listener_config {
  *
  * Only called in TCP/Unix listener modes.
  *
- * @param bus       The stdio_bus instance
+ * @param bus       The stdio Bus instance
  * @param client_id Unique client identifier
  * @param peer_info Peer address info (e.g., "192.168.1.1:54321" or "unix")
  * @param user_data User context from options
@@ -161,7 +161,7 @@ typedef void (*stdio_bus_client_connect_cb)(stdio_bus_t *bus, int client_id,
  *
  * Only called in TCP/Unix listener modes.
  *
- * @param bus       The stdio_bus instance
+ * @param bus       The stdio Bus instance
  * @param client_id Client identifier
  * @param reason    Disconnect reason (e.g., "closed", "error", "timeout")
  * @param user_data User context from options
@@ -174,7 +174,7 @@ typedef void (*stdio_bus_client_disconnect_cb)(stdio_bus_t *bus, int client_id,
  *============================================================================*/
 
 /**
- * @brief Options for creating a stdio_bus instance
+ * @brief Options for creating a stdio Bus instance
  */
 typedef struct stdio_bus_options {
     /* Configuration source (one of these must be set) */
@@ -229,7 +229,7 @@ typedef enum {
  *============================================================================*/
 
 /**
- * @brief Create a new stdio_bus instance
+ * @brief Create a new stdio Bus instance
  *
  * Parses configuration and allocates all internal structures.
  * Workers are NOT started until stdio_bus_start() is called.
@@ -240,7 +240,7 @@ typedef enum {
 stdio_bus_t *stdio_bus_create(const stdio_bus_options_t *options);
 
 /**
- * @brief Start the stdio_bus instance
+ * @brief Start the stdio Bus instance
  *
  * Spawns all worker processes defined in configuration.
  * After this call, the bus is ready to accept messages.

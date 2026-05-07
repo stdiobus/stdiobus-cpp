@@ -6,7 +6,7 @@
 
 /**
  * @file basic.cpp
- * @brief Basic usage example for stdiobus C++ SDK
+ * @brief Basic usage example for stdio Bus C++ SDK
  */
 
 #include <chrono>

@@ -2,7 +2,7 @@
 
 ## Design Principles
 
-The stdiobus C++ SDK is designed for low-overhead process orchestration:
+The stdio Bus C++ SDK is designed for low-overhead process orchestration:
 
 - **Zero-copy message passing** — Messages are passed as `std::string_view` to callbacks without intermediate copies
 - **No hidden allocations** in the hot path (step/ingest cycle)

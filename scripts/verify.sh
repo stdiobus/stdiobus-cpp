@@ -7,7 +7,7 @@
 #
 
 # =============================================================================
-# Full Verification Script for stdiobus C++ SDK
+# Full Verification Script for stdio Bus C++ SDK
 # =============================================================================
 #
 # This script ensures the C++ SDK is fully conformant with the kernel.
@@ -56,7 +56,7 @@ NC='\033[0m'
 FAILED=0
 
 echo "============================================================"
-echo "  stdiobus C++ SDK — Full Verification"
+echo "  stdio Bus C++ SDK — Full Verification"
 echo "============================================================"
 echo ""
 echo "  Repo root: $REPO_ROOT"

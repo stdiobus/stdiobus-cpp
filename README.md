@@ -1,4 +1,4 @@
-# stdiobus — C++ SDK for AI Agent Transport
+# stdio Bus — C++ SDK for AI Agent Transport
 
 [![Version](https://img.shields.io/badge/version-1.0.0-brightgreen?style=for-the-badge&logo=semver)](CHANGELOG.md)
 [![MCP](https://img.shields.io/badge/protocol-MCP-purple?style=for-the-badge&logo=jsonwebtokens)](https://modelcontextprotocol.io)

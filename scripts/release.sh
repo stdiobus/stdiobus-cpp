@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-# Release script for stdiobus C++ SDK
+# Release script for stdio Bus C++ SDK
 # Usage: ./scripts/release.sh <version>
 # Example: ./scripts/release.sh 1.1.0
 set -e
@@ -28,7 +28,7 @@ if ! echo "$VERSION" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
     exit 1
 fi
 
-echo "=== Releasing stdiobus C++ SDK v$VERSION ==="
+echo "=== Releasing stdio Bus C++ SDK v$VERSION ==="
 echo ""
 
 # Step 1: Verify clean working tree

@@ -6,7 +6,7 @@
 
 /**
  * @file test_conformance.cpp
- * @brief Conformance tests for stdiobus C++ SDK
+ * @brief Conformance tests for stdio Bus C++ SDK
  *
  * These tests mirror the kernel e2e test scenarios (tests/e2e/) but run
  * through the C++ SDK embed API. They prove that the SDK correctly exposes

@@ -9,7 +9,7 @@ stdio_bus is a **deterministic transport layer** for AI agent protocols (ACP/MCP
 - **Session management**: Maintains session affinity for stateful conversations
 - **Backpressure control**: Prevents memory exhaustion under load
 
-## What stdio_bus is NOT
+## What stdio Bus is NOT
 
 - ✘ Not an AI/ML framework
 - ✘ Not a message queue (no persistence)

@@ -3,10 +3,10 @@
  * Copyright 2026-present Raman Marozau, raman@stdiobus.com
  * SPDX-License-Identifier: Apache-2.0
  */
- 
+
 /**
  * @file user_app.cpp
- * @brief Simulates a real C++ user of the stdiobus SDK.
+ * @brief Simulates a real C++ user of the stdio Bus SDK.
  * 
  * This program is compiled OUTSIDE the SDK source tree, against an
  * installed copy of the SDK (via find_package). It exercises the full
@@ -36,7 +36,7 @@ int main() {
     int passes = 0;
     int failures = 0;
     
-    std::cerr << "=== stdiobus C++ SDK — User E2E Test ===" << std::endl;
+    std::cerr << "=== stdio Bus C++ SDK — User E2E Test ===" << std::endl;
     std::cerr << std::endl;
     
     // ─── 1. Types and constants ───────────────────────────────────

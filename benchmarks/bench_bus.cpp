@@ -6,7 +6,7 @@
 
 /**
  * @file bench_bus.cpp
- * @brief Benchmarks for stdiobus C++ SDK
+ * @brief Benchmarks for stdio Bus C++ SDK
  *
  * Measures overhead of the C++ wrapper layer over the C kernel.
  * Run with: ./build/benchmarks/stdiobus_bench

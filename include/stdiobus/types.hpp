@@ -6,7 +6,7 @@
 
 /**
  * @file types.hpp
- * @brief Core types for stdiobus C++ SDK
+ * @brief Core types for stdio Bus C++ SDK
  */
 
 #ifndef STDIOBUS_TYPES_HPP

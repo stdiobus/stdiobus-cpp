@@ -1,8 +1,8 @@
-# Doxyfile for stdiobus C++ SDK
+# Doxyfile for stdio Bus C++ SDK
 
 PROJECT_NAME           = "stdiobus"
 PROJECT_NUMBER         = "1.0.0"
-PROJECT_BRIEF          = "C++ SDK for stdio_bus — AI agent transport layer"
+PROJECT_BRIEF          = "C++ SDK for stdio Bus — AI agent transport layer"
 PROJECT_LOGO           =
 
 OUTPUT_DIRECTORY       = docs/api-reference

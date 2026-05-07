@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-# Test script for stdiobus C++ SDK
+# Test script for stdio Bus C++ SDK
 # Usage: ./scripts/test.sh [--unit] [--e2e] [--all] [--verbose]
 set -e
 
@@ -51,7 +51,7 @@ if [ ! -d "$BUILD_DIR" ]; then
     exit 1
 fi
 
-echo "=== Running stdiobus C++ SDK tests ==="
+echo "=== Running stdio Bus C++ SDK tests ==="
 echo ""
 
 FAILED=0

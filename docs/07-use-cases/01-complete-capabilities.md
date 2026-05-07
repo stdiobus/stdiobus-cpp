@@ -1,6 +1,6 @@
 # Complete Capabilities Reference
 
-This document lists ALL capabilities of stdio_bus + C++ SDK for R&D reference.
+This document lists ALL capabilities of stdio Bus + C++ SDK for R&D reference.
 
 ## Transport Capabilities
 

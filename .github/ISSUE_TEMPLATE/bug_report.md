@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-about: Report a bug in stdiobus C++ SDK
+about: Report a bug in stdio Bus C++ SDK
 title: ''
 labels: bug
 assignees: ''
