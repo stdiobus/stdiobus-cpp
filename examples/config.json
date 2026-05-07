@@ -1,0 +1,14 @@
+{
+  "pools": [
+    {
+      "id": "echo",
+      "command": "/bin/cat",
+      "args": [],
+      "instances": 1
+    }
+  ],
+  "limits": {
+    "max_input_buffer": 1048576,
+    "max_output_queue": 4194304
+  }
+}
