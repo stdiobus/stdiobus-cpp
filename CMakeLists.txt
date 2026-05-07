@@ -100,11 +100,24 @@ if(STDIOBUS_CPP_EXCEPTIONS)
     target_compile_definitions(stdiobus-headers INTERFACE STDIOBUS_CPP_EXCEPTIONS=1)
 endif()
 
+# Imported target for prebuilt C kernel (not exported — avoids absolute paths in install)
+if(EXISTS "${STDIO_BUS_LIB_PATH}")
+    add_library(stdio_bus_kernel STATIC IMPORTED)
+    set_target_properties(stdio_bus_kernel PROPERTIES
+        IMPORTED_LOCATION "${STDIO_BUS_LIB_PATH}"
+    )
+endif()
+
 # Static library with implementation
 add_library(stdiobus STATIC src/bus.cpp)
 add_library(stdiobus::stdiobus ALIAS stdiobus)
 target_link_libraries(stdiobus PUBLIC stdiobus-headers)
-target_link_libraries(stdiobus PRIVATE ${STDIO_BUS_LIB_PATH})
+if(TARGET stdio_bus_kernel)
+    # Link privately during build (absolute path, not exported)
+    target_link_libraries(stdiobus PRIVATE $<BUILD_INTERFACE:stdio_bus_kernel>)
+    # For installed consumers: link by library name (found in same lib/ dir)
+    target_link_libraries(stdiobus INTERFACE $<INSTALL_INTERFACE:stdio_bus>)
+endif()
 
 # Apply warnings to our own code only (PRIVATE)
 stdiobus_set_warnings(stdiobus)
