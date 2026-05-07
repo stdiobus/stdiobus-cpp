@@ -33,10 +33,9 @@ if(APPLE AND NOT CMAKE_OSX_SYSROOT)
     )
     if(_sdk_path)
         set(CMAKE_OSX_SYSROOT "${_sdk_path}")
-        # Ensure C++ standard library headers are found
-        set(_cxx_include "${_sdk_path}/usr/include/c++/v1")
-        if(EXISTS "${_cxx_include}")
-            add_compile_options(-isystem "${_cxx_include}")
+        # Workaround: some CLT versions do not search <sysroot>/usr/include/c++/v1
+        if(EXISTS "${_sdk_path}/usr/include/c++/v1")
+            include_directories(SYSTEM "${_sdk_path}/usr/include/c++/v1")
         endif()
     endif()
 endif()
