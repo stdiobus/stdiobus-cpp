@@ -2,4 +2,12 @@
 
 include("${CMAKE_CURRENT_LIST_DIR}/stdiobus-targets.cmake")
 
+# Ensure the kernel library can be found by consumers
+get_filename_component(_stdiobus_lib_dir "${CMAKE_CURRENT_LIST_DIR}/../.." ABSOLUTE)
+if(EXISTS "${_stdiobus_lib_dir}/libstdio_bus.a")
+    set_property(TARGET stdiobus::stdiobus APPEND PROPERTY
+        INTERFACE_LINK_DIRECTORIES "${_stdiobus_lib_dir}")
+endif()
+unset(_stdiobus_lib_dir)
+
 check_required_components(stdiobus)
