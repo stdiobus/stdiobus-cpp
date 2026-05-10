@@ -36,9 +36,9 @@ TEST(AsyncResult, WithResponse) {
 }
 
 TEST(AsyncBus, Construction) {
-    // C API creates handle even with invalid config
+    // Bus creates handle even with invalid config
     AsyncBus bus("nonexistent.json");
-    // Just verify no crash - start() will fail
+    // Just verify no crash - start() behavior depends on kernel
 }
 
 TEST(AsyncBus, ConstructFromOptions) {
@@ -46,8 +46,16 @@ TEST(AsyncBus, ConstructFromOptions) {
     opts.config_path = "nonexistent.json";
 
     AsyncBus bus(std::move(opts));
-    // Same - C API creates handle regardless
+    // Same - kernel creates handle regardless
 }
+
+// =============================================================================
+// CKernel-specific "invalid config" tests
+// These tests verify that CKernel rejects invalid/missing config. With CKernel,
+// Bus("nonexistent.json") produces an invalid bus where all operations fail.
+// EchoKernel accepts any config, so these expectations only hold with C kernel.
+// =============================================================================
+#ifdef STDIOBUS_HAS_C_KERNEL
 
 TEST(AsyncBus, StartInvalid) {
     AsyncBus bus("nonexistent.json");
@@ -87,6 +95,69 @@ TEST(AsyncBus, RequestAsyncInvalid) {
     EXPECT_TRUE(result.error);
 }
 
+#endif  // STDIOBUS_HAS_C_KERNEL
+
+// =============================================================================
+// EchoKernel-specific tests (when C kernel is NOT the default)
+// EchoKernel accepts any JSON config, so AsyncBus with "nonexistent.json" is
+// valid and operations succeed after start().
+// =============================================================================
+#ifndef STDIOBUS_HAS_C_KERNEL
+
+TEST(AsyncBus, EchoKernel_StartSucceeds) {
+    AsyncBus bus("nonexistent.json");
+    auto err = bus.start();
+    EXPECT_FALSE(err);  // Should succeed with EchoKernel
+}
+
+TEST(AsyncBus, EchoKernel_PumpSucceeds) {
+    AsyncBus bus("nonexistent.json");
+    auto start_err = bus.start();
+    EXPECT_FALSE(start_err);
+
+    // Pump should succeed (returns 0 events when nothing pending)
+    int result = bus.pump(std::chrono::milliseconds(0));
+    EXPECT_GE(result, 0);
+}
+
+TEST(AsyncBus, EchoKernel_NotifySucceeds) {
+    AsyncBus bus("nonexistent.json");
+    auto start_err = bus.start();
+    EXPECT_FALSE(start_err);
+
+    auto err = bus.notify(R"({"jsonrpc":"2.0","method":"test"})");
+    EXPECT_FALSE(err);  // Should succeed
+}
+
+TEST(AsyncBus, EchoKernel_StopSucceeds) {
+    AsyncBus bus("nonexistent.json");
+    auto start_err = bus.start();
+    EXPECT_FALSE(start_err);
+
+    auto stop_err = bus.stop();
+    EXPECT_FALSE(stop_err);  // Should succeed
+}
+
+TEST(AsyncBus, EchoKernel_RequestAsyncEchoes) {
+    AsyncBus bus("nonexistent.json");
+    auto start_err = bus.start();
+    EXPECT_FALSE(start_err);
+
+    auto future = bus.request_async(R"({"jsonrpc":"2.0","method":"echo","id":1})");
+
+    // Pump to deliver the echoed message
+    bus.pump(std::chrono::milliseconds(0));
+
+    auto status = future.wait_for(std::chrono::milliseconds(100));
+    EXPECT_EQ(status, std::future_status::ready);
+
+    auto result = future.get();
+    EXPECT_FALSE(result.error);
+    EXPECT_FALSE(result.response.empty());
+}
+
+#endif  // !STDIOBUS_HAS_C_KERNEL
+
 TEST(AsyncBus, CheckTimeouts) {
     AsyncBus bus("nonexistent.json");
     // Should not crash
@@ -99,7 +170,7 @@ TEST(AsyncBus, BusAccess) {
     Bus& bus = async_bus.bus();
     const Bus& const_bus = async_bus.bus();
 
-    // C API creates handle even with invalid config - just verify access works
+    // Just verify access works without crash
     (void)bus;
     (void)const_bus;
 }

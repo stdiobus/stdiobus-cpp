@@ -18,11 +18,11 @@
   <a href="https://github.com/stdiobus/stdiobus-cpp"><img src="https://img.shields.io/badge/arch-x86__64%20%7C%20arm64-blue?style=for-the-badge" alt="Architecture"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue?style=for-the-badge&logo=opensourceinitiative" alt="License"></a>
   <a href="https://github.com/stdiobus/stdiobus-cpp/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/stdiobus/stdiobus-cpp/ci.yml?style=for-the-badge&logo=githubactions&label=CI" alt="CI"></a>
-  <a href="https://github.com/stdiobus/stdiobus-cpp"><img src="https://img.shields.io/badge/tests-61%20passing-brightgreen?style=for-the-badge&logo=googletest" alt="Tests"></a>
+  <a href="https://github.com/stdiobus/stdiobus-cpp"><img src="https://img.shields.io/badge/tests-151%20passing-brightgreen?style=for-the-badge&logo=googletest" alt="Tests"></a>
   <a href="https://github.com/stdiobus/stdiobus-cpp"><img src="https://img.shields.io/badge/kernel%20unit-passing-brightgreen?style=for-the-badge&logo=googletest" alt="Kernel Unit"></a>
   <a href="https://github.com/stdiobus/stdiobus-cpp"><img src="https://img.shields.io/badge/property-passing-brightgreen?style=for-the-badge&logo=googletest" alt="Property"></a>
   <a href="https://github.com/stdiobus/stdiobus-cpp"><img src="https://img.shields.io/badge/integration-passing-brightgreen?style=for-the-badge&logo=googletest" alt="Integration"></a>
-  <a href="https://github.com/stdiobus/stdiobus-cpp"><img src="https://img.shields.io/badge/e2e-13%20passing-brightgreen?style=for-the-badge&logo=googletest" alt="E2E"></a>
+  <a href="https://github.com/stdiobus/stdiobus-cpp"><img src="https://img.shields.io/badge/e2e-18%20passing-brightgreen?style=for-the-badge&logo=googletest" alt="E2E"></a>
   <a href="https://github.com/stdiobus/stdiobus-cpp"><img src="https://img.shields.io/badge/conformance-11%20passing-brightgreen?style=for-the-badge&logo=googletest" alt="Conformance"></a>
   <a href="https://github.com/stdiobus/stdiobus-cpp"><img src="https://img.shields.io/badge/sanitizers-ASAN%20%7C%20UBSAN%20%7C%20TSAN-orange?style=for-the-badge&logo=llvm" alt="Sanitizers"></a>
   <a href="docs/architecture.md"><img src="https://img.shields.io/badge/ABI-stable%20v1-success?style=for-the-badge" alt="ABI"></a>

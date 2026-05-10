@@ -51,6 +51,14 @@ TEST(Bus, MoveAssignment) {
     EXPECT_FALSE(bus1);
 }
 
+// =============================================================================
+// CKernel-specific "invalid config" tests
+// These tests verify that CKernel rejects invalid/missing config and puts Bus
+// into an invalid (Stopped) state. EchoKernel accepts any config, so these
+// expectations only hold when the C kernel is the default.
+// =============================================================================
+#ifdef STDIOBUS_HAS_C_KERNEL
+
 TEST(Bus, InvalidBusState) {
     Bus bus("nonexistent.json");
 
@@ -81,6 +89,75 @@ TEST(Bus, StopInvalidBus) {
     auto err = bus.stop();
     EXPECT_TRUE(err);  // Should fail
 }
+
+#endif  // STDIOBUS_HAS_C_KERNEL
+
+// =============================================================================
+// EchoKernel-specific tests (when C kernel is NOT the default)
+// EchoKernel accepts any JSON config, so Bus with "nonexistent.json" is valid.
+// These tests verify correct behavior in pure C++ mode.
+// =============================================================================
+#ifndef STDIOBUS_HAS_C_KERNEL
+
+TEST(Bus, EchoKernel_ValidBusState) {
+    Bus bus("nonexistent.json");
+
+    // EchoKernel accepts any config — Bus is valid and in Created state
+    EXPECT_TRUE(static_cast<bool>(bus));
+    EXPECT_EQ(bus.state(), State::Created);
+    EXPECT_TRUE(bus.is_created());
+    EXPECT_FALSE(bus.is_running());
+    EXPECT_FALSE(bus.is_stopped());
+    EXPECT_EQ(bus.worker_count(), 0);
+    EXPECT_EQ(bus.session_count(), 0);
+    EXPECT_EQ(bus.pending_count(), 0);
+    EXPECT_EQ(bus.client_count(), 0);
+    EXPECT_EQ(bus.poll_fd(), -1);
+}
+
+TEST(Bus, EchoKernel_StartSucceeds) {
+    Bus bus("nonexistent.json");
+    auto err = bus.start();
+    EXPECT_FALSE(err);  // Should succeed
+    EXPECT_EQ(bus.state(), State::Running);
+    EXPECT_TRUE(bus.is_running());
+}
+
+TEST(Bus, EchoKernel_SendSucceedsAfterStart) {
+    Bus bus("nonexistent.json");
+    auto start_err = bus.start();
+    EXPECT_FALSE(start_err);
+
+    auto send_err = bus.send(R"({"jsonrpc":"2.0","method":"test","id":1})");
+    EXPECT_FALSE(send_err);  // Should succeed
+}
+
+TEST(Bus, EchoKernel_StopSucceedsAfterStart) {
+    Bus bus("nonexistent.json");
+    auto start_err = bus.start();
+    EXPECT_FALSE(start_err);
+
+    auto stop_err = bus.stop();
+    EXPECT_FALSE(stop_err);  // Should succeed
+    EXPECT_EQ(bus.state(), State::Stopped);
+    EXPECT_TRUE(bus.is_stopped());
+}
+
+TEST(Bus, EchoKernel_SendFailsBeforeStart) {
+    Bus bus("nonexistent.json");
+    // Bus is in Created state — send should fail (ingest requires Running)
+    auto err = bus.send("test");
+    EXPECT_TRUE(err);
+}
+
+TEST(Bus, EchoKernel_StopFailsBeforeStart) {
+    Bus bus("nonexistent.json");
+    // Bus is in Created state — stop should fail (stop requires Running)
+    auto err = bus.stop();
+    EXPECT_TRUE(err);
+}
+
+#endif  // !STDIOBUS_HAS_C_KERNEL
 
 TEST(Bus, StatsInvalidBus) {
     Bus bus("nonexistent.json");

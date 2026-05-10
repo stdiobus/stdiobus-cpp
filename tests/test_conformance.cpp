@@ -8,6 +8,9 @@
  * @file test_conformance.cpp
  * @brief Conformance tests for stdio Bus C++ SDK
  *
+ * These tests require the C kernel (libstdio_bus.a) and real worker processes.
+ * They are compiled and run only when STDIOBUS_HAS_C_KERNEL is defined.
+ *
  * These tests mirror the kernel e2e test scenarios (tests/e2e/) but run
  * through the C++ SDK embed API. They prove that the SDK correctly exposes
  * all kernel capabilities:
@@ -25,13 +28,16 @@
  * This ensures byte-for-byte compatibility with the kernel's own test suite.
  */
 
+#include <stdiobus.hpp>
+
+#ifdef STDIOBUS_HAS_C_KERNEL
+
 #include <algorithm>
 #include <chrono>
 #include <cstdio>
 #include <cstdlib>
 #include <fstream>
 #include <gtest/gtest.h>
-#include <stdiobus.hpp>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -683,3 +689,5 @@ TEST_F(Conformance, InlineJsonConfig) {
     auto stop_err = bus.stop(std::chrono::seconds(5));
     EXPECT_FALSE(stop_err);
 }
+
+#endif // STDIOBUS_HAS_C_KERNEL

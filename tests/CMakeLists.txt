@@ -27,19 +27,24 @@ include(GoogleTest)
 gtest_discover_tests(stdiobus_tests)
 
 # E2E test executable (requires libstdio_bus.a with real workers)
-add_executable(stdiobus_e2e
-    test_e2e.cpp
-)
+# Only built when C kernel is enabled — these tests spawn real worker processes.
+if(STDIOBUS_ENABLE_C_KERNEL)
+    add_executable(stdiobus_e2e
+        test_e2e.cpp
+    )
 
-target_link_libraries(stdiobus_e2e PRIVATE
-    stdiobus
-    GTest::gtest_main
-)
+    target_link_libraries(stdiobus_e2e PRIVATE
+        stdiobus
+        GTest::gtest_main
+    )
 
-gtest_discover_tests(stdiobus_e2e
-    TEST_PREFIX "E2E/"
-    PROPERTIES LABELS "e2e"
-)
+    gtest_discover_tests(stdiobus_e2e
+        TEST_PREFIX "E2E/"
+        PROPERTIES LABELS "e2e"
+    )
+else()
+    message(STATUS "E2E tests skipped (C kernel disabled — no real worker processes available)")
+endif()
 
 # Kernel parity test executable
 # Calls the SAME C functions as tests/test_main.c directly from C++.
@@ -192,24 +197,30 @@ gtest_discover_tests(stdiobus_kernel_parity_new
     TEST_PREFIX "KernelParityNew/"
     PROPERTIES
         LABELS "parity"
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/.."
 )
 
 # Conformance test executable
 # Mirrors kernel e2e tests (tests/e2e/) through the C++ SDK API.
 # Uses the same echo-worker.js as kernel tests.
-add_executable(stdiobus_conformance
-    test_conformance.cpp
-)
+# Only built when C kernel is enabled — these tests require real worker processes.
+if(STDIOBUS_ENABLE_C_KERNEL)
+    add_executable(stdiobus_conformance
+        test_conformance.cpp
+    )
 
-target_link_libraries(stdiobus_conformance PRIVATE
-    stdiobus
-    GTest::gtest_main
-)
+    target_link_libraries(stdiobus_conformance PRIVATE
+        stdiobus
+        GTest::gtest_main
+    )
 
-gtest_discover_tests(stdiobus_conformance
-    TEST_PREFIX "Conformance/"
-    PROPERTIES
-        LABELS "conformance"
-        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../.."
-        ENVIRONMENT "STDIO_BUS_ROOT=${CMAKE_CURRENT_SOURCE_DIR}/../../.."
-)
+    gtest_discover_tests(stdiobus_conformance
+        TEST_PREFIX "Conformance/"
+        PROPERTIES
+            LABELS "conformance"
+            WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/.."
+            ENVIRONMENT "STDIO_BUS_ROOT=${CMAKE_CURRENT_SOURCE_DIR}/.."
+    )
+else()
+    message(STATUS "Conformance tests skipped (C kernel disabled — no real worker processes available)")
+endif()

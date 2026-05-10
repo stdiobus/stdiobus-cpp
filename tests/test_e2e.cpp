@@ -8,16 +8,22 @@
  * @file test_e2e.cpp
  * @brief End-to-end tests for stdio Bus C++ SDK
  *
+ * These tests require the C kernel (libstdio_bus.a) and real worker processes.
+ * They are compiled and run only when STDIOBUS_HAS_C_KERNEL is defined.
+ *
  * These tests create a real bus with an echo worker (/bin/cat),
  * send messages, and verify responses come back correctly.
  */
+
+#include <stdiobus.hpp>
+
+#ifdef STDIOBUS_HAS_C_KERNEL
 
 #include <atomic>
 #include <chrono>
 #include <cstdio>
 #include <fstream>
 #include <gtest/gtest.h>
-#include <stdiobus.hpp>
 #include <thread>
 #include <vector>
 
@@ -616,3 +622,5 @@ TEST(E2E, LargeMessage) {
     err = bus.stop(std::chrono::seconds(5));
     EXPECT_FALSE(err);
 }
+
+#endif // STDIOBUS_HAS_C_KERNEL

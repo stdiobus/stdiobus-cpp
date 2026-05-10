@@ -1,0 +1,67 @@
+{
+  "tests": 11,
+  "name": "AllTests",
+  "testsuites": [
+    {
+      "name": "Conformance",
+      "tests": 11,
+      "testsuite": [
+        {
+          "name": "SingleRequestResponse",
+          "file": "\/Users\/etc\/Projects\/Target-Insight-Function\/stdio-Bus\/stdiobus-sdk\/stdiobus-cpp\/tests\/test_conformance.cpp",
+          "line": 255
+        },
+        {
+          "name": "MultipleConcurrentMessages",
+          "file": "\/Users\/etc\/Projects\/Target-Insight-Function\/stdio-Bus\/stdiobus-sdk\/stdiobus-cpp\/tests\/test_conformance.cpp",
+          "line": 288
+        },
+        {
+          "name": "SessionAffinityRouting",
+          "file": "\/Users\/etc\/Projects\/Target-Insight-Function\/stdio-Bus\/stdiobus-sdk\/stdiobus-cpp\/tests\/test_conformance.cpp",
+          "line": 335
+        },
+        {
+          "name": "RequestResponseCorrelation",
+          "file": "\/Users\/etc\/Projects\/Target-Insight-Function\/stdio-Bus\/stdiobus-sdk\/stdiobus-cpp\/tests\/test_conformance.cpp",
+          "line": 399
+        },
+        {
+          "name": "GracefulShutdown",
+          "file": "\/Users\/etc\/Projects\/Target-Insight-Function\/stdio-Bus\/stdiobus-sdk\/stdiobus-cpp\/tests\/test_conformance.cpp",
+          "line": 443
+        },
+        {
+          "name": "StatisticsAccuracy",
+          "file": "\/Users\/etc\/Projects\/Target-Insight-Function\/stdio-Bus\/stdiobus-sdk\/stdiobus-cpp\/tests\/test_conformance.cpp",
+          "line": 476
+        },
+        {
+          "name": "MultiWorkerDistribution",
+          "file": "\/Users\/etc\/Projects\/Target-Insight-Function\/stdio-Bus\/stdiobus-sdk\/stdiobus-cpp\/tests\/test_conformance.cpp",
+          "line": 516
+        },
+        {
+          "name": "LargeMessageHandling",
+          "file": "\/Users\/etc\/Projects\/Target-Insight-Function\/stdio-Bus\/stdiobus-sdk\/stdiobus-cpp\/tests\/test_conformance.cpp",
+          "line": 548
+        },
+        {
+          "name": "NotificationNoResponse",
+          "file": "\/Users\/etc\/Projects\/Target-Insight-Function\/stdio-Bus\/stdiobus-sdk\/stdiobus-cpp\/tests\/test_conformance.cpp",
+          "line": 580
+        },
+        {
+          "name": "StateTransitions",
+          "file": "\/Users\/etc\/Projects\/Target-Insight-Function\/stdio-Bus\/stdiobus-sdk\/stdiobus-cpp\/tests\/test_conformance.cpp",
+          "line": 633
+        },
+        {
+          "name": "InlineJsonConfig",
+          "file": "\/Users\/etc\/Projects\/Target-Insight-Function\/stdio-Bus\/stdiobus-sdk\/stdiobus-cpp\/tests\/test_conformance.cpp",
+          "line": 671
+        }
+      ]
+    }
+  ]
+}

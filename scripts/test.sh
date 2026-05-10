@@ -69,7 +69,9 @@ fi
 
 if [ "$RUN_E2E" = true ]; then
     echo "--- E2E Tests ---"
-    if ctest --test-dir "$BUILD_DIR" $VERBOSE -L e2e; then
+    if ctest --test-dir "$BUILD_DIR" $VERBOSE -L e2e -N 2>/dev/null | grep -q "Total Tests: 0"; then
+        echo "  ⊘ E2E tests skipped (C kernel disabled — no real worker processes available)"
+    elif ctest --test-dir "$BUILD_DIR" $VERBOSE -L e2e; then
         echo "  ✓ E2E tests passed"
     else
         echo "  ✗ E2E tests FAILED"
@@ -80,7 +82,9 @@ fi
 
 if [ "$RUN_CONFORMANCE" = true ]; then
     echo "--- Conformance Tests (mirrors kernel e2e) ---"
-    if ctest --test-dir "$BUILD_DIR" $VERBOSE -L conformance; then
+    if ctest --test-dir "$BUILD_DIR" $VERBOSE -L conformance -N 2>/dev/null | grep -q "Total Tests: 0"; then
+        echo "  ⊘ Conformance tests skipped (C kernel disabled — no real worker processes available)"
+    elif ctest --test-dir "$BUILD_DIR" $VERBOSE -L conformance; then
         echo "  ✓ Conformance tests passed"
     else
         echo "  ✗ Conformance tests FAILED"

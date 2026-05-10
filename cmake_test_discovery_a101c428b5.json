@@ -1,0 +1,97 @@
+{
+  "tests": 17,
+  "name": "AllTests",
+  "testsuites": [
+    {
+      "name": "KernelParityNew",
+      "tests": 17,
+      "testsuite": [
+        {
+          "name": "echo_lifecycle_created_to_running_to_stopped",
+          "file": "\/Users\/etc\/Projects\/Target-Insight-Function\/stdio-Bus\/stdiobus-sdk\/stdiobus-cpp\/tests\/test_kernel_parity_new.cpp",
+          "line": 75
+        },
+        {
+          "name": "c_kernel_lifecycle_created_to_running_to_stopped",
+          "file": "\/Users\/etc\/Projects\/Target-Insight-Function\/stdio-Bus\/stdiobus-sdk\/stdiobus-cpp\/tests\/test_kernel_parity_new.cpp",
+          "line": 89
+        },
+        {
+          "name": "echo_validate_config_valid_returns_ok",
+          "file": "\/Users\/etc\/Projects\/Target-Insight-Function\/stdio-Bus\/stdiobus-sdk\/stdiobus-cpp\/tests\/test_kernel_parity_new.cpp",
+          "line": 112
+        },
+        {
+          "name": "c_kernel_validate_config_valid_returns_ok",
+          "file": "\/Users\/etc\/Projects\/Target-Insight-Function\/stdio-Bus\/stdiobus-sdk\/stdiobus-cpp\/tests\/test_kernel_parity_new.cpp",
+          "line": 120
+        },
+        {
+          "name": "echo_ingest_step_delivers_message",
+          "file": "\/Users\/etc\/Projects\/Target-Insight-Function\/stdio-Bus\/stdiobus-sdk\/stdiobus-cpp\/tests\/test_kernel_parity_new.cpp",
+          "line": 132
+        },
+        {
+          "name": "c_kernel_ingest_step_delivers_message",
+          "file": "\/Users\/etc\/Projects\/Target-Insight-Function\/stdio-Bus\/stdiobus-sdk\/stdiobus-cpp\/tests\/test_kernel_parity_new.cpp",
+          "line": 151
+        },
+        {
+          "name": "echo_stats_match_after_ingest_step",
+          "file": "\/Users\/etc\/Projects\/Target-Insight-Function\/stdio-Bus\/stdiobus-sdk\/stdiobus-cpp\/tests\/test_kernel_parity_new.cpp",
+          "line": 187
+        },
+        {
+          "name": "c_kernel_stats_match_after_ingest_step",
+          "file": "\/Users\/etc\/Projects\/Target-Insight-Function\/stdio-Bus\/stdiobus-sdk\/stdiobus-cpp\/tests\/test_kernel_parity_new.cpp",
+          "line": 210
+        },
+        {
+          "name": "echo_interface_version_matches_constant",
+          "file": "\/Users\/etc\/Projects\/Target-Insight-Function\/stdio-Bus\/stdiobus-sdk\/stdiobus-cpp\/tests\/test_kernel_parity_new.cpp",
+          "line": 244
+        },
+        {
+          "name": "c_kernel_interface_version_matches_constant",
+          "file": "\/Users\/etc\/Projects\/Target-Insight-Function\/stdio-Bus\/stdiobus-sdk\/stdiobus-cpp\/tests\/test_kernel_parity_new.cpp",
+          "line": 250
+        },
+        {
+          "name": "both_kernels_report_same_interface_version",
+          "file": "\/Users\/etc\/Projects\/Target-Insight-Function\/stdio-Bus\/stdiobus-sdk\/stdiobus-cpp\/tests\/test_kernel_parity_new.cpp",
+          "line": 255
+        },
+        {
+          "name": "echo_ingest_before_start_returns_state_error",
+          "file": "\/Users\/etc\/Projects\/Target-Insight-Function\/stdio-Bus\/stdiobus-sdk\/stdiobus-cpp\/tests\/test_kernel_parity_new.cpp",
+          "line": 266
+        },
+        {
+          "name": "c_kernel_ingest_before_start_returns_state_error",
+          "file": "\/Users\/etc\/Projects\/Target-Insight-Function\/stdio-Bus\/stdiobus-sdk\/stdiobus-cpp\/tests\/test_kernel_parity_new.cpp",
+          "line": 277
+        },
+        {
+          "name": "typed_path_echo_lifecycle_via_busbuilder",
+          "file": "\/Users\/etc\/Projects\/Target-Insight-Function\/stdio-Bus\/stdiobus-sdk\/stdiobus-cpp\/tests\/test_kernel_parity_new.cpp",
+          "line": 294
+        },
+        {
+          "name": "typed_path_c_kernel_lifecycle_via_busbuilder",
+          "file": "\/Users\/etc\/Projects\/Target-Insight-Function\/stdio-Bus\/stdiobus-sdk\/stdiobus-cpp\/tests\/test_kernel_parity_new.cpp",
+          "line": 330
+        },
+        {
+          "name": "typed_path_both_kernels_produce_valid_bus",
+          "file": "\/Users\/etc\/Projects\/Target-Insight-Function\/stdio-Bus\/stdiobus-sdk\/stdiobus-cpp\/tests\/test_kernel_parity_new.cpp",
+          "line": 380
+        },
+        {
+          "name": "typed_path_stats_match_after_ingest_step",
+          "file": "\/Users\/etc\/Projects\/Target-Insight-Function\/stdio-Bus\/stdiobus-sdk\/stdiobus-cpp\/tests\/test_kernel_parity_new.cpp",
+          "line": 412
+        }
+      ]
+    }
+  ]
+}

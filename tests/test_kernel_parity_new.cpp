@@ -96,6 +96,11 @@ TEST(KernelParityNew, c_kernel_lifecycle_created_to_running_to_stopped) {
 
     auto err = kernel->stop(5);
     EXPECT_FALSE(err);
+
+    // Pump step() to allow state to transition from Stopping → Stopped
+    for (int i = 0; i < 50 && kernel->state() != State::Stopped; ++i) {
+        kernel->step(10);
+    }
     EXPECT_EQ(kernel->state(), State::Stopped);
 }
 #endif
@@ -364,6 +369,11 @@ TEST(KernelParityNew, typed_path_c_kernel_lifecycle_via_busbuilder) {
 
     err = bus.stop(std::chrono::seconds(5));
     EXPECT_FALSE(err);
+
+    // Pump step() to allow state to transition from Stopping → Stopped
+    for (int i = 0; i < 50 && bus.state() != State::Stopped; ++i) {
+        bus.step(std::chrono::milliseconds(10));
+    }
     EXPECT_EQ(bus.state(), State::Stopped);
 }
 
