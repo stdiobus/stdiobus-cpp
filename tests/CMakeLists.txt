@@ -15,6 +15,7 @@ add_executable(stdiobus_tests
     test_ffi.cpp
     test_bus.cpp
     test_async.cpp
+    test_echo_kernel.cpp
 )
 
 target_link_libraries(stdiobus_tests PRIVATE
@@ -123,6 +124,75 @@ if(EXISTS "${KERNEL_TEST_SOURCE}")
     # EXCLUDE from install — this is dev-only, never shipped
     # (no install() call for this target)
 endif()
+
+# Integration test executable — Bus operating through IKernel with EchoKernel
+add_executable(stdiobus_integration_echo
+    test_integration_echo.cpp
+)
+
+target_link_libraries(stdiobus_integration_echo PRIVATE
+    stdiobus
+    GTest::gtest_main
+)
+
+gtest_discover_tests(stdiobus_integration_echo
+    TEST_PREFIX "IntegrationEcho/"
+    PROPERTIES
+        LABELS "integration"
+)
+
+# Kernel property-based test executable
+# Verifies EchoKernel invariants with randomized inputs and operation sequences.
+add_executable(stdiobus_kernel_properties
+    test_kernel_properties.cpp
+)
+
+target_link_libraries(stdiobus_kernel_properties PRIVATE
+    stdiobus
+    GTest::gtest_main
+)
+
+gtest_discover_tests(stdiobus_kernel_properties
+    TEST_PREFIX "KernelProperties/"
+    PROPERTIES
+        LABELS "property"
+)
+
+# E2E Kernel test executable — verifies both typed and JSON kernel paths
+# Only builds when C kernel is enabled (requires real workers via libstdio_bus.a)
+if(STDIOBUS_ENABLE_C_KERNEL)
+    add_executable(stdiobus_e2e_kernel
+        test_e2e_kernel.cpp
+    )
+
+    target_link_libraries(stdiobus_e2e_kernel PRIVATE
+        stdiobus
+        GTest::gtest_main
+    )
+
+    gtest_discover_tests(stdiobus_e2e_kernel
+        TEST_PREFIX "E2E_Kernel/"
+        PROPERTIES
+            LABELS "e2e"
+    )
+endif()
+
+# IKernel parity test executable — EchoKernel vs CKernel behavioral equivalence
+# Always compiles (EchoKernel tests run unconditionally; CKernel tests guarded by #ifdef)
+add_executable(stdiobus_kernel_parity_new
+    test_kernel_parity_new.cpp
+)
+
+target_link_libraries(stdiobus_kernel_parity_new PRIVATE
+    stdiobus
+    GTest::gtest_main
+)
+
+gtest_discover_tests(stdiobus_kernel_parity_new
+    TEST_PREFIX "KernelParityNew/"
+    PROPERTIES
+        LABELS "parity"
+)
 
 # Conformance test executable
 # Mirrors kernel e2e tests (tests/e2e/) through the C++ SDK API.

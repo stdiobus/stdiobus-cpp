@@ -67,16 +67,15 @@ int main(int argc, char* argv[]) {
     std::cout << "Creating stdio_bus with config: " << config_path << std::endl;
 
     // Build bus with options
-    auto builder =
-        stdiobus::BusBuilder()
-            .config_path(config_path)
-            .on_message([](std::string_view msg) { std::cout << "[MSG] " << msg << std::endl; })
-            .on_error([](stdiobus::ErrorCode code, std::string_view msg) {
-                std::cerr << "[ERR " << static_cast<int>(code) << "] " << msg << std::endl;
-            })
-            .on_worker([](int worker_id, std::string_view event) {
-                std::cout << "[WORKER " << worker_id << "] " << event << std::endl;
-            });
+    stdiobus::BusBuilder builder;
+    builder.config_path(config_path)
+        .on_message([](std::string_view msg) { std::cout << "[MSG] " << msg << std::endl; })
+        .on_error([](stdiobus::ErrorCode code, std::string_view msg) {
+            std::cerr << "[ERR " << static_cast<int>(code) << "] " << msg << std::endl;
+        })
+        .on_worker([](int worker_id, std::string_view event) {
+            std::cout << "[WORKER " << worker_id << "] " << event << std::endl;
+        });
 
     // Configure listener mode
     if (tcp_port > 0) {

@@ -19,6 +19,9 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue?style=for-the-badge&logo=opensourceinitiative" alt="License"></a>
   <a href="https://github.com/stdiobus/stdiobus-cpp/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/stdiobus/stdiobus-cpp/ci.yml?style=for-the-badge&logo=githubactions&label=CI" alt="CI"></a>
   <a href="https://github.com/stdiobus/stdiobus-cpp"><img src="https://img.shields.io/badge/tests-61%20passing-brightgreen?style=for-the-badge&logo=googletest" alt="Tests"></a>
+  <a href="https://github.com/stdiobus/stdiobus-cpp"><img src="https://img.shields.io/badge/kernel%20unit-passing-brightgreen?style=for-the-badge&logo=googletest" alt="Kernel Unit"></a>
+  <a href="https://github.com/stdiobus/stdiobus-cpp"><img src="https://img.shields.io/badge/property-passing-brightgreen?style=for-the-badge&logo=googletest" alt="Property"></a>
+  <a href="https://github.com/stdiobus/stdiobus-cpp"><img src="https://img.shields.io/badge/integration-passing-brightgreen?style=for-the-badge&logo=googletest" alt="Integration"></a>
   <a href="https://github.com/stdiobus/stdiobus-cpp"><img src="https://img.shields.io/badge/e2e-13%20passing-brightgreen?style=for-the-badge&logo=googletest" alt="E2E"></a>
   <a href="https://github.com/stdiobus/stdiobus-cpp"><img src="https://img.shields.io/badge/conformance-11%20passing-brightgreen?style=for-the-badge&logo=googletest" alt="Conformance"></a>
   <a href="https://github.com/stdiobus/stdiobus-cpp"><img src="https://img.shields.io/badge/sanitizers-ASAN%20%7C%20UBSAN%20%7C%20TSAN-orange?style=for-the-badge&logo=llvm" alt="Sanitizers"></a>
@@ -48,20 +51,58 @@
 |-------|--------|---------|
 | `stdiobus::Bus` | `<stdiobus/bus.hpp>` | RAII facade, builder pattern, std::chrono, std::function |
 | `stdiobus::AsyncBus` | `<stdiobus/async.hpp>` | Promise-based async with std::future |
+| `stdiobus::IKernel` | `<stdiobus/kernel.hpp>` | Abstract kernel interface for pluggable backends |
+| `stdiobus::EchoKernel` | `<stdiobus/echo_kernel.hpp>` | Built-in loopback kernel for testing |
+| `stdiobus::CKernel` | `<stdiobus/c_kernel.hpp>` | Reference C kernel adapter (conditional) |
 | `stdiobus::ffi` | `<stdiobus/ffi.hpp>` | Thin 1:1 wrapper over C kernel API |
 
 ## Quick Start
+
+### Typed Path (recommended)
+
+Construct a kernel directly with a typed config, then inject it into the builder:
 
 ```cpp
 #include <stdiobus.hpp>
 #include <iostream>
 
 int main() {
-    stdiobus::Bus bus("config.json");
+    // Create kernel with typed config (compile-time safe)
+    auto kernel = std::make_unique<stdiobus::EchoKernel>();
 
-    bus.on_message([](std::string_view msg) {
-        std::cout << "Received: " << msg << std::endl;
-    });
+    auto bus = stdiobus::BusBuilder()
+        .kernel(std::move(kernel))
+        .on_message([](std::string_view msg) {
+            std::cout << "Received: " << msg << std::endl;
+        })
+        .build();
+
+    if (auto err = bus.start(); err) {
+        std::cerr << "Failed: " << err.message() << std::endl;
+        return 1;
+    }
+
+    bus.send(R"({"jsonrpc":"2.0","method":"echo","params":{},"id":1})");
+    bus.step(std::chrono::milliseconds(100));
+}
+```
+
+### JSON Path (dynamic/file-based config)
+
+Use a factory + JSON config string for runtime-determined kernel selection:
+
+```cpp
+#include <stdiobus.hpp>
+#include <iostream>
+
+int main() {
+    auto bus = stdiobus::BusBuilder()
+        .config_json(R"({"workers":[{"command":"node worker.js"}]})")
+        .kernel_factory(stdiobus::c_kernel_factory())
+        .on_message([](std::string_view msg) {
+            std::cout << "Received: " << msg << std::endl;
+        })
+        .build();
 
     if (auto err = bus.start(); err) {
         std::cerr << "Failed: " << err.message() << std::endl;
@@ -76,7 +117,37 @@ int main() {
 }
 ```
 
+## Pluggable Kernel Architecture
+
+The SDK uses a pluggable kernel architecture that decouples the facade (`Bus`, `AsyncBus`, `BusBuilder`) from the underlying transport implementation via the `IKernel` interface.
+
+### IKernel Interface
+
+`IKernel` defines the contract for lifecycle management (`start`, `step`, `stop`), message ingestion (`ingest`), state queries, and callback delivery. All implementations are single-threaded; callbacks fire only from within `step()`.
+
+### Two Integration Paths
+
+| Path | Method | Use Case |
+|------|--------|----------|
+| **Typed** (priority) | `BusBuilder::kernel(std::unique_ptr<IKernel>)` | Compile-time known kernel, no JSON needed |
+| **JSON** (fallback) | `BusBuilder::kernel_factory(KernelFactory)` | Dynamic/file-based config, factory creates kernel from JSON |
+
+### Built-in Kernels
+
+| Kernel | Description |
+|--------|-------------|
+| `EchoKernel` | In-process loopback — echoes ingested messages back via callback. Pure C++17, no dependencies. Ideal for testing and prototyping. |
+| `CKernel` | Wraps `libstdio_bus.a` via FFI. Full production functionality. Conditionally compiled (`STDIOBUS_ENABLE_C_KERNEL`). |
+
+### Custom Kernels
+
+Implement `IKernel`, override all 16 pure virtual methods, and inject via `BusBuilder::kernel()`. See the [Kernel Implementor Guide](docs/kernel-implementor-guide.md) for step-by-step instructions.
+
+---
+
 ## Installation
+
+> **Note:** The vcpkg port builds as pure C++ (no prebuilt binaries required). The C kernel adapter is optional and enabled via the `c-kernel` feature flag when `libstdio_bus.a` is available.
 
 ### CMake FetchContent
 
@@ -139,6 +210,7 @@ sudo cmake --install build
 | `STDIOBUS_BUILD_EXAMPLES` | ON | Build example targets |
 | `STDIOBUS_WARNINGS_AS_ERRORS` | OFF | Treat warnings as errors (CI) |
 | `STDIOBUS_SANITIZER` | _(empty)_ | Enable sanitizer (address, undefined, thread) |
+| `STDIOBUS_ENABLE_C_KERNEL` | Auto | Enable C kernel adapter (ON if `libstdio_bus.a` found, OFF otherwise) |
 
 ## Error Handling
 
@@ -220,6 +292,7 @@ See [CHANGELOG.md](CHANGELOG.md) for release history.
 - Maximum message size is bounded by kernel buffer configuration
 - `Bus` is not thread-safe; use one instance per thread or synchronize externally
 - `AsyncBus` uses simple JSON ID extraction (does not handle nested JSON)
+- `IKernel` interface is v1, subject to evolution in future major versions
 
 ## Contributing
 

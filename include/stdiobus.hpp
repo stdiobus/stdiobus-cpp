@@ -62,10 +62,21 @@
 #include <stdiobus/types.hpp>
 #include <stdiobus/version.hpp>
 
+// Kernel interface (abstract integration contract)
+#include <stdiobus/kernel.hpp>
+
+// Built-in echo kernel (no external dependencies)
+#include <stdiobus/echo_kernel.hpp>
+
 // Optional: thin wrapper for direct C API access
 #include <stdiobus/ffi.hpp>
 
 // Optional: async adaptor with std::future
 #include <stdiobus/async.hpp>
+
+// Optional: C kernel adapter (requires libstdio_bus.a)
+#ifdef STDIOBUS_HAS_C_KERNEL
+#include <stdiobus/c_kernel.hpp>
+#endif
 
 #endif  // STDIOBUS_HPP

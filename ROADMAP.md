@@ -11,9 +11,11 @@
 - ✓ Comprehensive test suite (unit, e2e, conformance, kernel parity)
 - ✓ Full documentation
 
-## v1.1.0 (Planned)
+## v1.1.0 (In Progress)
 
-- [ ] vcpkg port submission
+- [ ] Kernel abstraction layer (IKernel, EchoKernel, CKernel)
+- [ ] Pluggable kernel architecture with typed and JSON config paths
+- [ ] vcpkg port submission (enabled by kernel abstraction — pure C++ build, no prebuilts required)
 - [ ] Coverage reporting in CI (lcov/codecov)
 - [ ] Fuzz testing for message parsing paths
 - [ ] Performance benchmarks with Google Benchmark
@@ -22,6 +24,7 @@
 
 ## v1.2.0 (Planned)
 
+- [ ] Custom kernel implementor certification suite
 - [ ] Metrics/observability hooks (message counters, latency histograms)
 - [ ] Custom allocator support for zero-allocation hot paths
 - [ ] `Bus::wait_for()` convenience method (blocks until state change)
@@ -29,6 +32,7 @@
 
 ## v2.0.0 (Future)
 
+- [ ] Remote kernel support (kernel running in separate process)
 - [ ] C++20 coroutine support (`co_await` on async operations)
 - [ ] Shared library build option with symbol visibility
 - [ ] ABI stability guarantees with abi-compliance-checker

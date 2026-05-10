@@ -5,12 +5,22 @@ vcpkg_from_github(
     SHA512 0  # Updated during port submission
 )
 
+# Determine C kernel option based on feature flag
+if("c-kernel" IN_LIST FEATURES)
+    set(ENABLE_C_KERNEL ON)
+else()
+    set(ENABLE_C_KERNEL OFF)
+endif()
+
 vcpkg_cmake_configure(
     SOURCE_PATH "${SOURCE_PATH}"
     OPTIONS
+        -DSTDIOBUS_ENABLE_C_KERNEL=${ENABLE_C_KERNEL}
         -DSTDIOBUS_BUILD_TESTS=OFF
         -DSTDIOBUS_BUILD_EXAMPLES=OFF
         -DSTDIOBUS_BUILD_BENCHMARKS=OFF
+        -DSTDIOBUS_INSTALL=ON
+        -DSTDIOBUS_WARNINGS_AS_ERRORS=OFF
 )
 
 vcpkg_cmake_install()

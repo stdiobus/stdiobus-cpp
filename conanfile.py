@@ -23,10 +23,12 @@ class StdioBusCppConan(ConanFile):
     options = {
         "fPIC": [True, False],
         "exceptions": [True, False],
+        "enable_c_kernel": [True, False],
     }
     default_options = {
         "fPIC": True,
         "exceptions": False,
+        "enable_c_kernel": False,
     }
     exports_sources = (
         "CMakeLists.txt",
@@ -68,12 +70,14 @@ class StdioBusCppConan(ConanFile):
         tc.variables["STDIOBUS_CPP_EXCEPTIONS"] = self.options.exceptions
         tc.variables["STDIOBUS_BUILD_TESTS"] = False
         tc.variables["STDIOBUS_BUILD_EXAMPLES"] = False
+        tc.variables["STDIOBUS_ENABLE_C_KERNEL"] = self.options.enable_c_kernel
 
-        # Point to prebuilt libstdio_bus.a
-        triple = self._get_prebuilt_triple()
-        if triple:
-            prebuilt_dir = os.path.join(self.source_folder, "prebuilds", triple)
-            tc.variables["STDIO_BUS_LIB_DIR"] = prebuilt_dir
+        # Point to prebuilt libstdio_bus.a (only relevant when C kernel enabled)
+        if self.options.enable_c_kernel:
+            triple = self._get_prebuilt_triple()
+            if triple:
+                prebuilt_dir = os.path.join(self.source_folder, "prebuilds", triple)
+                tc.variables["STDIO_BUS_LIB_DIR"] = prebuilt_dir
 
         tc.generate()
 
@@ -88,31 +92,41 @@ class StdioBusCppConan(ConanFile):
         # C++ SDK headers
         copy(self, "*.hpp", src=os.path.join(self.source_folder, "include"),
              dst=os.path.join(self.package_folder, "include"))
-        # C kernel header (required by ffi.hpp)
-        triple = self._get_prebuilt_triple()
-        if triple:
-            prebuilt_dir = os.path.join(self.source_folder, "prebuilds", triple)
-            include_dir = os.path.join(prebuilt_dir, "..", "..", "..", "include")
-            copy(self, "stdio_bus_embed.h", src=include_dir,
-                 dst=os.path.join(self.package_folder, "include"))
+        # C kernel header (required by ffi.hpp) — only when C kernel enabled
+        if self.options.enable_c_kernel:
+            triple = self._get_prebuilt_triple()
+            if triple:
+                prebuilt_dir = os.path.join(self.source_folder, "prebuilds", triple)
+                include_dir = os.path.join(prebuilt_dir, "..", "..", "..", "include")
+                copy(self, "stdio_bus_embed.h", src=include_dir,
+                     dst=os.path.join(self.package_folder, "include"))
         # Built SDK library
         copy(self, "*.a", src=self.build_folder,
              dst=os.path.join(self.package_folder, "lib"), keep_path=False)
         copy(self, "*.lib", src=self.build_folder,
              dst=os.path.join(self.package_folder, "lib"), keep_path=False)
-        # Prebuilt kernel library
-        if triple:
-            prebuilt_dir = os.path.join(self.source_folder, "prebuilds", triple)
-            copy(self, "libstdio_bus.a", src=prebuilt_dir,
-                 dst=os.path.join(self.package_folder, "lib"))
+        # Prebuilt kernel library (only when C kernel enabled)
+        if self.options.enable_c_kernel:
+            triple = self._get_prebuilt_triple()
+            if triple:
+                prebuilt_dir = os.path.join(self.source_folder, "prebuilds", triple)
+                copy(self, "libstdio_bus.a", src=prebuilt_dir,
+                     dst=os.path.join(self.package_folder, "lib"))
 
     def package_info(self):
-        self.cpp_info.libs = ["stdiobus", "stdio_bus"]
+        if self.options.enable_c_kernel:
+            self.cpp_info.libs = ["stdiobus", "stdio_bus"]
+        else:
+            self.cpp_info.libs = ["stdiobus"]
+
         self.cpp_info.set_property("cmake_file_name", "stdiobus")
         self.cpp_info.set_property("cmake_target_name", "stdiobus::stdiobus")
 
         if self.options.exceptions:
-            self.cpp_info.defines = ["STDIOBUS_CPP_EXCEPTIONS=1"]
+            self.cpp_info.defines.append("STDIOBUS_CPP_EXCEPTIONS=1")
+
+        if self.options.enable_c_kernel:
+            self.cpp_info.defines.append("STDIOBUS_HAS_C_KERNEL=1")
 
         if self.settings.os in ["Linux", "FreeBSD"]:
             self.cpp_info.system_libs = ["pthread"]

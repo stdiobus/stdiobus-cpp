@@ -1,7 +1,7 @@
 {
   "name": "stdiobus",
   "version": "1.0.0",
-  "description": "C++ SDK for stdio Bus - AI agent transport layer for MCP/ACP protocols",
+  "description": "C++17 SDK for stdio Bus - AI agent transport layer for MCP/ACP protocols",
   "homepage": "https://stdiobus.com",
   "license": "Apache-2.0",
   "supports": "linux | osx",
@@ -14,5 +14,11 @@
       "name": "vcpkg-cmake-config",
       "host": true
     }
-  ]
+  ],
+  "features": {
+    "c-kernel": {
+      "description": "Enable C kernel adapter (requires prebuilt libstdio_bus.a)",
+      "dependencies": []
+    }
+  }
 }

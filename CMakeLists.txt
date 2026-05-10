@@ -78,8 +78,17 @@ else()
     endif()
 endif()
 
-if(NOT EXISTS "${STDIO_BUS_LIB_PATH}")
-    message(WARNING "libstdio_bus.a not found at: ${STDIO_BUS_LIB_PATH}")
+# =============================================================================
+# STDIOBUS_ENABLE_C_KERNEL Option (auto-detect based on libstdio_bus.a presence)
+# =============================================================================
+if(EXISTS "${STDIO_BUS_LIB_PATH}")
+    option(STDIOBUS_ENABLE_C_KERNEL "Enable C kernel adapter (requires libstdio_bus.a)" ON)
+else()
+    option(STDIOBUS_ENABLE_C_KERNEL "Enable C kernel adapter (requires libstdio_bus.a)" OFF)
+endif()
+
+if(STDIOBUS_ENABLE_C_KERNEL AND NOT EXISTS "${STDIO_BUS_LIB_PATH}")
+    message(WARNING "STDIOBUS_ENABLE_C_KERNEL=ON but libstdio_bus.a not found at: ${STDIO_BUS_LIB_PATH}")
     message(WARNING "Build the kernel first or set STDIO_BUS_LIB_DIR")
 endif()
 
@@ -101,22 +110,39 @@ if(STDIOBUS_CPP_EXCEPTIONS)
 endif()
 
 # Imported target for prebuilt C kernel (not exported — avoids absolute paths in install)
-if(EXISTS "${STDIO_BUS_LIB_PATH}")
+if(STDIOBUS_ENABLE_C_KERNEL AND EXISTS "${STDIO_BUS_LIB_PATH}")
     add_library(stdio_bus_kernel STATIC IMPORTED)
     set_target_properties(stdio_bus_kernel PROPERTIES
         IMPORTED_LOCATION "${STDIO_BUS_LIB_PATH}"
     )
 endif()
 
+# Core sources (always compiled)
+set(STDIOBUS_SOURCES
+    src/bus.cpp
+    src/echo_kernel.cpp
+)
+
+# Conditional C kernel adapter
+if(STDIOBUS_ENABLE_C_KERNEL)
+    list(APPEND STDIOBUS_SOURCES src/c_kernel.cpp)
+endif()
+
 # Static library with implementation
-add_library(stdiobus STATIC src/bus.cpp)
+add_library(stdiobus STATIC ${STDIOBUS_SOURCES})
 add_library(stdiobus::stdiobus ALIAS stdiobus)
 target_link_libraries(stdiobus PUBLIC stdiobus-headers)
-if(TARGET stdio_bus_kernel)
+
+if(STDIOBUS_ENABLE_C_KERNEL)
+    # Define STDIOBUS_HAS_C_KERNEL when C kernel is enabled
+    target_compile_definitions(stdiobus PUBLIC STDIOBUS_HAS_C_KERNEL=1)
     # Link privately during build (absolute path, not exported)
     target_link_libraries(stdiobus PRIVATE $<BUILD_INTERFACE:stdio_bus_kernel>)
     # For installed consumers: link by library name (found in same lib/ dir)
     target_link_libraries(stdiobus INTERFACE $<INSTALL_INTERFACE:stdio_bus>)
+    message(STATUS "C kernel adapter: ENABLED")
+else()
+    message(STATUS "C kernel adapter: DISABLED (pure C++ mode)")
 endif()
 
 # Apply warnings to our own code only (PRIVATE)

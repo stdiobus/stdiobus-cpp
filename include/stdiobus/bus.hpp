@@ -13,13 +13,17 @@
 #define STDIOBUS_BUS_HPP
 
 #include <stdiobus/error.hpp>
-#include <stdiobus/ffi.hpp>
+#include <stdiobus/kernel.hpp>
 #include <stdiobus/types.hpp>
 
 #include <chrono>
 #include <memory>
 #include <string>
 #include <string_view>
+
+// Forward declare C handle type for raw_handle() backward compat
+struct stdio_bus;
+using stdio_bus_t = struct stdio_bus;
 
 namespace stdiobus {
 inline namespace v1 {
@@ -65,6 +69,19 @@ public:
      * @brief Construct from Options struct
      */
     explicit Bus(Options options);
+
+    /**
+     * @brief Construct from Options struct with explicit kernel factory
+     */
+    Bus(Options options, KernelFactory factory);
+
+    /**
+     * @brief Construct from a pre-constructed kernel instance (typed path)
+     *
+     * The kernel is assumed ready (state = Created, awaiting set_callbacks() + start()).
+     * No factory or validate_config() is called.
+     */
+    Bus(Options options, std::unique_ptr<IKernel> kernel);
 
     /**
      * @brief Destructor - stops and destroys bus
@@ -217,13 +234,16 @@ public:
 
     /**
      * @brief Get raw C handle (for advanced use)
+     * @deprecated Use IKernel interface via BusBuilder::kernel_factory() instead
+     * @return stdio_bus_t* handle, or nullptr if backed by non-CKernel
      */
+    [[deprecated("Use IKernel interface via BusBuilder::kernel_factory() instead")]]
     stdio_bus_t* raw_handle() const;
 
     /**
-     * @brief Check if bus is valid (has handle)
+     * @brief Check if bus is valid (has kernel)
      */
-    explicit operator bool() const { return impl_ != nullptr; }
+    explicit operator bool() const;
 
 private:
     struct Impl;
@@ -245,6 +265,12 @@ private:
 class BusBuilder {
 public:
     BusBuilder() = default;
+
+    // Non-copyable (owns unique_ptr<IKernel>), movable
+    BusBuilder(const BusBuilder&) = delete;
+    BusBuilder& operator=(const BusBuilder&) = delete;
+    BusBuilder(BusBuilder&&) noexcept = default;
+    BusBuilder& operator=(BusBuilder&&) noexcept = default;
 
     /// Set config file path
     BusBuilder& config_path(std::string path) {
@@ -303,11 +329,36 @@ public:
         return *this;
     }
 
+    /// Set a pre-constructed kernel instance (typed path, recommended)
+    BusBuilder& kernel(std::unique_ptr<IKernel> k) {
+        kernel_ = std::move(k);
+        return *this;
+    }
+
+    /// Set custom kernel factory (JSON path)
+    BusBuilder& kernel_factory(KernelFactory factory) {
+        factory_ = std::move(factory);
+        return *this;
+    }
+
     /// Build the Bus instance
-    Bus build() { return Bus(std::move(options_)); }
+    Bus build() {
+        if (kernel_) {
+            // Typed path: pass pre-constructed kernel directly
+            return Bus(std::move(options_), std::move(kernel_));
+        } else if (factory_) {
+            // JSON path: pass factory to Bus
+            return Bus(std::move(options_), std::move(factory_));
+        } else {
+            // Default: Bus will use default_kernel_factory()
+            return Bus(std::move(options_));
+        }
+    }
 
 private:
     Options options_;
+    KernelFactory factory_;
+    std::unique_ptr<IKernel> kernel_;
 };
 
 }  // namespace v1
